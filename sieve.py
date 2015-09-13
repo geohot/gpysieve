@@ -10,7 +10,7 @@ def gje(a):
   ova = 0
 
   #track = map(lambda x: [x], range(a.shape[0]))
-  track = np.identity(a.shape[0])
+  track = np.identity(a.shape[0], dtype=np.int)
 
   # loop through the columns
   for pivot in range(a.shape[1]):
@@ -79,7 +79,12 @@ def ton(z, P):
   return ret
 
 def rsieve(n):
-  B = 347
+  # ONLY POSITIVE THINING
+  # smaller B means less needed
+  # bigger B means faster to find
+
+  #B = 347
+  B = 700
   #B = 40
   #B = 80
   #B = 100
