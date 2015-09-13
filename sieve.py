@@ -3,15 +3,19 @@ import gmpy
 import itertools
 import numpy as np
 from fractions import gcd
+import sys
 
 # hella bootleg
 def gje(a):
   ova = 0
 
-  track = map(lambda x: [x], range(a.shape[0]))
+  #track = map(lambda x: [x], range(a.shape[0]))
+  track = np.identity(a.shape[0])
 
   # loop through the columns
   for pivot in range(a.shape[1]):
+    #sys.stdout.write(".")
+    #sys.stdout.flush()
     #print pivot, ova
     found = None
 
@@ -25,10 +29,7 @@ def gje(a):
             #print a
             #print "  switch", ova, i
             a[[ova, i],:] = a[[i, ova],:]
-
-            t = track[ova]
-            track[ova] = track[i]
-            track[i] = t
+            track[[ova, i],:] = track[[i, ova],:]
             #print a
           found = ova
           ova = ova + 1
@@ -39,6 +40,7 @@ def gje(a):
 
   # cancel pairs in track
 
+  """
   ret = []
   for x in track:
     rret = np.zeros(a.shape[0], dtype=np.int)
@@ -46,8 +48,9 @@ def gje(a):
     for xx in x:
       rret[xx] += 1
     ret.append(rret%2)
+  """
 
-  return a, ret
+  return a, track%2
 
 def factorize(zn, P):
   ret = []
@@ -76,11 +79,17 @@ def ton(z, P):
   return ret
 
 def rsieve(n):
-  #B = 347
+  B = 347
   #B = 40
-  B = 100
+  #B = 80
+  #B = 100
+  #B = 10000
+  #B = 1500
+  #B = 1000
+  #B = 100000
+  #B = 500
   P = filter(gmpy.is_prime, range(2, B+1))
-  #print P
+  print B, "has", len(P)
 
   # find valid z
   # not sure if there is a faster way
@@ -94,8 +103,10 @@ def rsieve(n):
   target = len(P)*2+1
   #target = len(P)+9
 
+
+  print "finding relations started..."
   while len(zs) < target:
-    print pfactor_count, len(zs)
+    #print pfactor_count, len(zs)
     for f in itertools.combinations_with_replacement(P, pfactor_count):
       z = reduce(lambda x,y: x*y, f)
       # z is the candidate
@@ -104,11 +115,15 @@ def rsieve(n):
 
       if ff != None:
         zs.append((ton(f, P), ton(ff, P)))
+        sys.stdout.write("finding relations %6d/%6d\r" % (len(zs), target))
+        sys.stdout.flush()
 
       # duplicate
       if len(zs) >= target:
         break
+
     pfactor_count += 1
+  print "found"
 
 
   # got len(P)+3 z's
@@ -126,7 +141,9 @@ def rsieve(n):
   # find a vector in the nullity of arr
   # we want to figure out what xors together to make 0
   print a.shape, len(P)
+  print "running gauss jordan"
   a,track = gje(a)
+  print "printing factors hopefully"
   #print a
   #print track
 
@@ -152,7 +169,7 @@ def rsieve(n):
 
   
 
-BITS = 16
+BITS = 24
 
 if __name__ == "__main__":
   p = gmpy.next_prime(random.randint(0, 1 << BITS))
