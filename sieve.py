@@ -38,18 +38,6 @@ def gje(a):
           a[i] ^= a[found]
           track[i] += track[found]
 
-  # cancel pairs in track
-
-  """
-  ret = []
-  for x in track:
-    rret = np.zeros(a.shape[0], dtype=np.int)
-    #print x
-    for xx in x:
-      rret[xx] += 1
-    ret.append(rret%2)
-  """
-
   return a, track%2
 
 def factorize(zn, P):
@@ -164,6 +152,10 @@ def rsieve(n):
       ret *= pow(int(P[i]), int(x[i]/2))
     return ret
 
+  # but with luck we will get a nontrivial pair of factors of n, and the algorithm will terminate
+
+  # WTF THIS ALGORITHM NEEDS LUCK
+  # the y form a basis we could use better TODO: use better luck here
   for x,y in filt:
     s1 = np.dot(y, arr)[0:len(P)]
     s2 = np.dot(y, arr)[len(P):]
@@ -184,10 +176,4 @@ if __name__ == "__main__":
   print "factoring",n
 
   rsieve(n)
-  """
-  rsieve(187)
-  rsieve(273)    # 13*21
-  rsieve(19*21)    # 17*21
-  """
-
 
