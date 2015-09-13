@@ -76,7 +76,9 @@ def ton(z, P):
   return ret
 
 def rsieve(n):
-  B = 7
+  #B = 347
+  #B = 40
+  B = 100
   P = filter(gmpy.is_prime, range(2, B+1))
   #print P
 
@@ -88,7 +90,11 @@ def rsieve(n):
   # it's generally sufficient that the number of relations be a few more than the size of P
 
   # len(P)*2+1 is guaranteed to be enough
-  while len(zs) < len(P)+3:
+
+  target = len(P)*2+1
+  #target = len(P)+9
+
+  while len(zs) < target:
     print pfactor_count, len(zs)
     for f in itertools.combinations_with_replacement(P, pfactor_count):
       z = reduce(lambda x,y: x*y, f)
@@ -98,6 +104,10 @@ def rsieve(n):
 
       if ff != None:
         zs.append((ton(f, P), ton(ff, P)))
+
+      # duplicate
+      if len(zs) >= target:
+        break
     pfactor_count += 1
 
 
@@ -115,28 +125,34 @@ def rsieve(n):
 
   # find a vector in the nullity of arr
   # we want to figure out what xors together to make 0
-  #print a
+  print a.shape, len(P)
   a,track = gje(a)
   #print a
   #print track
 
-  s1 = np.dot(track[-1], arr)[0:len(P)]
-  s2 = np.dot(track[-1], arr)[len(P):]
+
+  print a
+  filt = filter(lambda (x,y): x == 0, zip(a.sum(axis=1), track))
+  #print filt
+
 
   def pp(x):
     ret = 1
     for i in range(len(x)):
-      ret *= pow(P[i], x[i]/2)
+      ret *= pow(int(P[i]), int(x[i]/2))
     return ret
 
+  for x,y in filt:
+    s1 = np.dot(y, arr)[0:len(P)]
+    s2 = np.dot(y, arr)[len(P):]
 
-  a,b = pp(s1), pp(s2)
+    a,b = pp(s1), pp(s2)
 
-  print n, gcd(b-a, n), gcd(b+a, n)
+    print n, gcd(b-a, n), gcd(b+a, n)
 
   
 
-BITS = 6
+BITS = 16
 
 if __name__ == "__main__":
   p = gmpy.next_prime(random.randint(0, 1 << BITS))
