@@ -3,6 +3,7 @@ import gmpy
 import itertools
 import numpy as np
 from fractions import gcd
+import math
 import sys
 
 # hella bootleg
@@ -59,12 +60,94 @@ def factorize(zn, P):
   else:
     return None
 
+def vfactorize(zn, P):
+  ret = [0]*len(P)
+  while zn != 1:
+    good = False
+    for p in range(len(P)):
+      if zn%P[p] == 0:
+        zn /= P[p]
+        ret[p] += 1
+        good = True
+        break
+    if not good:
+      break
+
+  #print z, zn
+  if zn == 1:
+    return ret
+  else:
+    return None
+
 
 def ton(z, P):
   ret = [0]*len(P)
   for zz in z:
     ret[P.index(zz)] += 1
   return ret
+
+
+def qsieve(n):
+  B = 1000
+
+  # this is the factor base
+  P = filter(gmpy.is_prime, range(2, B+1))
+  print B, "has", len(P)
+
+  r = int(math.sqrt(n) + 1)
+
+
+  rels = []
+  target = len(P)+1
+
+  k = 0
+  print "finding relations started..."
+  while len(rels) < target:
+    rr = ((r+k)**2) % n
+    ff = vfactorize(rr, P)
+    if ff != None:
+      #print "\n", r+k, rr
+      rels.append((r+k,ff))
+      sys.stdout.write("finding relations %6d/%6d\r" % (len(rels), target))
+      sys.stdout.flush()
+    k += 1
+  print ""
+
+  arr = map(lambda x: x[0], rels)
+  ma = np.asarray(map(lambda x: x[1], rels))
+  mat = ma % 2
+
+  #print ma
+
+  print "running gauss jordan"
+  a,track = gje(mat)
+  print "printing factors hopefully"
+  #print a
+  #print track
+
+  filt = filter(lambda (x,y): x == 0, zip(a.sum(axis=1), track))
+
+  def pp(x):
+    ret = 1
+    for i in range(len(x)):
+      ret *= pow(int(P[i]), int(x[i]/2))
+    return ret
+
+  print "real"
+
+  factors = set()
+  # y is which vectors i am using
+  for x,y in filt:
+    a = 1
+    for i in range(len(y)):
+      if y[i] == 1:
+        a *= arr[i]
+    # if we add the prime vector, that's like multipling
+    b = pp(np.dot(y, ma))
+    factors.add(gcd(b-a, n))
+    factors.add(gcd(b+a, n))
+  print list(sorted(factors))
+
 
 def rsieve(n):
   # ONLY POSITIVE THINING
@@ -81,6 +164,9 @@ def rsieve(n):
   #B = 1000
   #B = 100000
   #B = 500
+
+
+  # this is the factor base
   P = filter(gmpy.is_prime, range(2, B+1))
   print B, "has", len(P)
 
@@ -141,7 +227,7 @@ def rsieve(n):
   #print track
 
 
-  print a
+  #print a
   filt = filter(lambda (x,y): x == 0, zip(a.sum(axis=1), track))
   #print filt
 
@@ -162,11 +248,13 @@ def rsieve(n):
 
     a,b = pp(s1), pp(s2)
 
+    # these are a congruence of squares
+    # a^2 === b^2 (mod n)
     print n, gcd(b-a, n), gcd(b+a, n)
 
   
 
-BITS = 24
+BITS = 32
 
 if __name__ == "__main__":
   p = gmpy.next_prime(random.randint(0, 1 << BITS))
@@ -175,5 +263,6 @@ if __name__ == "__main__":
   n = p*q
   print "factoring",n
 
-  rsieve(n)
+  #rsieve(n)
+  qsieve(n)
 
