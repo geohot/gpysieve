@@ -62,18 +62,15 @@ def factorize(zn, P):
 
 def vfactorize(zn, P):
   ret = [0]*len(P)
-  while zn != 1:
-    good = False
-    for p in range(len(P)):
-      if zn%P[p] == 0:
-        zn /= P[p]
-        ret[p] += 1
-        good = True
-        break
-    if not good:
+  for p in range(len(P)):
+    while zn%P[p] == 0:
+      zn /= P[p]
+      ret[p] += 1
+
+    #early stop
+    if zn == 1:
       break
 
-  #print z, zn
   if zn == 1:
     return ret
   else:
@@ -87,9 +84,7 @@ def ton(z, P):
   return ret
 
 
-def qsieve(n):
-  B = 1000
-
+def qsieve(n, B=1000):
   # this is the factor base
   P = filter(gmpy.is_prime, range(2, B+1))
   print B, "has", len(P)
@@ -264,5 +259,5 @@ if __name__ == "__main__":
   print "factoring",n
 
   #rsieve(n)
-  qsieve(n)
+  qsieve(n, B=1000)
 
