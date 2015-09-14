@@ -9,18 +9,62 @@ def qfac(n):
     s += 1
   return n,s
 
+# Fermat's (Little) Theorem check
+# i think these psuedoprimes are a strict subset of b2spp ones
+def flt(n):
+  return pow(2, n-1, n) == 1
+
+# strong base 2 psuedoprimes
 def b2spp(n):
   a = 2
   d,s = qfac(n-1)
   is_prime = False
+
   if pow(a, d, n) == 1:
     is_prime = True
+
+  # is this part what makes it strong?
   for r in range(s):
     if is_prime:
       break
     if pow(a, d*(1<<r), n) == n-1:
       is_prime = True
+
   return is_prime
+
+
+def jacobi(a, n):
+  # a / n
+  # n must be odd?
+
+  # for all p that are prime factors of n
+  #   0 if a === 0 (mod p)
+  #   1 if a !== 0 (mod p) and there exists x s.t. a === x^2 (mod p)
+  #  -1 if a !== 0 (mod p) and there does not exist x
+
+  # 1. Reduce the "numerator" modulo the "denominator" using rule 2.
+  a = a%n
+
+  # 2. Extract any factors of 2 from the "numerator" using rule 4 and evaluate them using rule 8.
+  ret = 1
+  while a&1 == 0 and a != 0:
+    n8 = n%8
+    if n8 == 3 or n8 == 5:
+      ret *= -1
+    a /= 2
+    #print a
+
+  #print a, n, ret
+  if a == 1:
+    return ret
+  elif gcd(a, n) > 1:
+    return 0
+  else:
+    # we know they are odd positive coprime integers
+    # flip the symbol using rule 6?
+    if n%4 == 3 and a%4 == 3:
+      ret *= -1
+    return ret * jacobi(n, a)
 
 # http://codegolf.stackexchange.com/questions/10701/fastest-code-to-find-the-next-prime
 def legendre(a, m):
@@ -35,8 +79,12 @@ def ltest(n):
   if int(math.sqrt(n))**2 == n:
     return False
 
+  #print n
   while gmpy.jacobi(D,n) != -1:
-    #print "    ",D, n, legendre(D, n), gmpy.jacobi(D,n)
+    #print "    %4d %5d %2d %2d" % (D, n, jacobi(D, n), gmpy.jacobi(D,n))
+    if jacobi(D, n) != gmpy.jacobi(D, n):
+      print "FAILED AT",D,n
+      exit(0)
     if D > 0:
       D += 2
     else:
@@ -81,14 +129,25 @@ def ltest(n):
       is_prime = True
   return is_prime
 
-for n in range(3, 10000, 2):
-  bt = b2spp(n)
-  lt = ltest(n)
-  if bt != bool(gmpy.is_prime(n)):
-    print "BT", bt, n
-  if lt != bool(gmpy.is_prime(n)):
-    print "LT", lt, n
+def many():
+  for n in range(3, 10000, 2):
+    ft = flt(n)
+    bt = b2spp(n)
+    lt = ltest(n)
+    if ft != bool(gmpy.is_prime(n)):
+      print "FT", ft, n
+    if bt != bool(gmpy.is_prime(n)):
+      print "BT", bt, n
+    if lt != bool(gmpy.is_prime(n)):
+      print "LT", lt, n
 
-
+#for i in range(1, 100, 2):
+#for i in range(9, 30, 2):
+  #print i, gmpy.jacobi(5,i), jacobi(5,i) 
   
+#print gmpy.jacobi(13, 179), jacobi(13, 179)
+#print gmpy.jacobi(-7, 29)
+#print jacobi(-7, 29)
+many()
+
 
