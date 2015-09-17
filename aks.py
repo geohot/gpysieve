@@ -48,6 +48,6 @@ if __name__ == "__main__":
       print "OMGOMG", n, aks, gmpy.is_prime(n)
 """
 
-#print isprime_alt(23)
-print isprime_alt(561)
+print isprime_alt(23)
+#print isprime_alt(561)
 
