@@ -28,8 +28,10 @@ for i in xrange(1 << len(P)):
     for j in range(len(P)):
       if (i>>j)&1 == 1:
         choice.append(P[j])
-    print tr, (tr-1) % N, (tr-1)/N, choice
+    print tr, (tr-1) % N, (tr-1)/N, len(choice), choice
     x = (tr-1)/N
+
+    # x*N === -1 mod p
     for p in choice:
       print p, x*N % p
 

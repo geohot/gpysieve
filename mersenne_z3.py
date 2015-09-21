@@ -3,13 +3,11 @@ from z3 import *
 s = Solver()
 
 p = Int('p')
-
 s.add(p > 5)
 
 m = 2**p
-
-s.add(2**m % m == 2)
-s.add(3**m % m == 3)
+for a in [2,3]:
+  s.add(((a**m) % m) == a)
 
 print s.check()
 m = s.model()
