@@ -16,26 +16,26 @@ ret, phi = factor(N)
 print "2^%f" % (log(phi)/log(2))
 
 # brute force
-
 for i in xrange(1 << len(P)):
+  # check, but don't add it to choice
   tr = 1
   for j in range(len(P)):
     if (i>>j)&1 == 1:
       tr *= P[j]
-  #print i, tr
+
+  # see if this one is good
   if (tr%N) == 1:
+    # reconstruct the ones we multiplied together
     choice = []
     for j in range(len(P)):
       if (i>>j)&1 == 1:
         choice.append(P[j])
-    print tr, (tr-1) % N, (tr-1)/N, choice
+
+    # x*N + 1 == tr
     x = (tr-1)/N
+    print tr, x, choice
+
+    # x*N === -1 mod p
     for p in choice:
       print p, x*N % p
-
-
-
-
-
-
 
