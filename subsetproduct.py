@@ -3,22 +3,33 @@ from factor import factor
 from math import log
 import gmpy
 
-primes = filter(gmpy.is_prime, range(1000))
+primes = filter(gmpy.is_prime, range(10000))
 
 # P and N
-from findd import *
-# fast demo
-#P = primes[20:80]
+# (1248, 70) takes ???? seconds
+#from findd import *
+
+# (100, 14) takes ??? seconds
+#P = primes[20:120]
 #N = reduce(lambda x,y: x*y, primes[0:15])
 
+# (40, 9) takes 11 seconds
+P = primes[20:60]
+N = reduce(lambda x,y: x*y, primes[0:10])
 
-# this is a bullshit parameter
-ms = 2048
-
+# fast demo
+# (15, 4) takes 0.02 seconds
 #P = primes[20:35]
 #N = reduce(lambda x,y: x*y, primes[0:5])
 
-print P
+# this is a bullshit parameter
+# max size any of the additions can be
+# could be a bit wrong in the mods
+#ms = 20
+ms = int(log(max(P))/log(2) + 1)+1
+print "bits needed is ",ms
+
+#print P
 print "2^%d" % len(P)
 print "finding", N
 
@@ -71,14 +82,16 @@ for i in xrange(1 << len(P)):
 
 rret = ret[1:]
 re = [x-1 for x in rret]  # mods for isomorphism
-print rret
-print P
+#print rret
+#print P
 
+"""
 mat = []
 for x in rret:
   mat.append([y%x for y in P])
 mat = np.asarray(mat).astype(np.int).T
 print mat
+"""
 
 def generator(x):
   fact, phi = factor(x-1)
@@ -97,7 +110,7 @@ def isomorphism(x):
     for i in range(1, x-1):
       quack[(g**i) % x] = i
     if len(quack) == x-1:
-      print x,"has generator",g
+      #print x,"has generator",g
       break
 
   if len(quack) != x-1:
@@ -112,7 +125,7 @@ for x in rret:
   pmat.append([quack[y%x] for y in P])
 
 pmat = np.asarray(pmat).astype(np.int).T
-print pmat
+#print pmat
 
 #test = [1,0,0,0,1,1,1,1]
 
@@ -168,15 +181,20 @@ s.add(bor > 0)
 for j in range(pmat.shape[1]):
   for i in range(pmat.shape[0]):
     #iv = IntVal(pmat[i,j])
-    iv = BitVecVal(pmat[i,j], ms)
+    #iv = BitVecVal(pmat[i,j], ms)
+    iv = pmat[i,j]
+    mod = re[j]
     if i == 0:
+      #ss = (iv * bb[i]) % mod
       ss = iv * bb[i]
       #print ss
       #ss = If(bb[i], pmat[i,j], 0)
     else:
+      #ss = (ss + iv * bb[i]) % mod
       ss += iv * bb[i]
       #ss += If(bb[i], pmat[i,j], 0)
-  s.add(ss % re[j] == 0)
+  s.add(ss % mod == 0)
+  #s.add(ss == 0)
   
 print s.check()
 print s.model()
