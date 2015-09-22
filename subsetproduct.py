@@ -13,8 +13,8 @@ from findd import *
 
 # (60, 14) takes ??? seconds
 # reduce to (60, 27)
-#P = primes[20:80]
-#N = reduce(lambda x,y: x*y, primes[0:13])
+#P = primes[20:70]
+#N = reduce(lambda x,y: x*y, primes[0:12])
 
 # (40, 9) takes 11 seconds, 2 seconds with hacks
 # reduce to (40, 15)
@@ -163,12 +163,19 @@ for i in range(len(re)):
   print uff
 fpmat = np.asarray(fpmat).T
 
-print fpmat.shape
-print fpmat
-print ree
 
-pmat = fpmat
-re = ree
+order = sorted(zip(ree, range(len(ree))))
+print order
+
+pmat = fpmat[:, map(lambda x: x[1], order)]
+re = map(lambda x: x[0], order)
+
+print pmat.shape
+print pmat
+print re
+
+#exit(0)
+
 # crappy optimization done
 
 print "max possible sums"
@@ -241,25 +248,40 @@ for i in range(pmat.shape[0]):
 
 # at least one must be True
 #s.add(bor == True)
-s.add(bor > 0)
+s.add(bor == 1)
 
 for j in range(pmat.shape[1]):
-  for i in range(pmat.shape[0]):
-    #iv = IntVal(pmat[i,j])
-    #iv = BitVecVal(pmat[i,j], ms)
-    iv = pmat[i,j]
-    mod = re[j]
-    if i == 0:
-      #ss = (iv * bb[i]) % mod
-      ss = iv * bb[i]
-      #print ss
-      #ss = If(bb[i], pmat[i,j], 0)
-    else:
-      #ss = (ss + iv * bb[i]) % mod
-      ss += iv * bb[i]
-      #ss += If(bb[i], pmat[i,j], 0)
-  s.add(ss % mod == 0)
-  #s.add(ss == 0)
+  mod = re[j]
+
+  #if (mod%2) == 0:
+  if mod == 2:
+    # special case for mod 2 is xor
+    # we might be able to do even better using linear algebra stuff
+    ss = None
+    for i in range(pmat.shape[0]):
+      if (pmat[i,j]%2) == 1:
+        if ss == None:
+          ss = bb[i]
+        else:
+          ss ^= bb[i]
+    s.add(ss == 0)
+
+  if mod != 2:
+    for i in range(pmat.shape[0]):
+      #iv = IntVal(pmat[i,j])
+      #iv = BitVecVal(pmat[i,j], ms)
+      iv = pmat[i,j]
+      if i == 0:
+        #ss = (iv * bb[i]) % mod
+        ss = iv * bb[i]
+        #print ss
+        #ss = If(bb[i], pmat[i,j], 0)
+      else:
+        #ss = (ss + iv * bb[i]) % mod
+        ss += iv * bb[i]
+        #ss += If(bb[i], pmat[i,j], 0)
+    s.add(ss % mod == 0)
+    #s.add(ss == 0)
   
 print s.check()
 #print s.model()
