@@ -7,27 +7,40 @@ primes = filter(gmpy.is_prime, range(10000))
 
 # P and N
 # (1248, 70) takes ???? seconds
-#from findd import *
+from findd import *
+# max sum is 18 bits
+# after reduction it's (1248, 169)
 
-# (80, 14) takes ??? seconds
-#P = primes[20:100]
-#N = reduce(lambda x,y: x*y, primes[0:15])
+# (60, 14) takes ??? seconds
+# reduce to (60, 27)
+#P = primes[20:80]
+#N = reduce(lambda x,y: x*y, primes[0:13])
 
 # (40, 9) takes 11 seconds, 2 seconds with hacks
+# reduce to (40, 15)
+#P = primes[20:60]
+#N = reduce(lambda x,y: x*y, primes[0:10])
+
+# swag
 P = primes[20:60]
-N = reduce(lambda x,y: x*y, primes[0:10])
+N = reduce(lambda x,y: x*y, primes[0:9])
 
 # fast demo
 # (15, 4) takes 0.02 seconds
 #P = primes[20:35]
 #N = reduce(lambda x,y: x*y, primes[0:5])
 
+# really fast demo, (10,4)
+#P = primes[20:40]
+#N = reduce(lambda x,y: x*y, primes[0:5])
+
 # this is a bullshit parameter
 # max size any of the additions can be
 # could be a bit wrong in the mods
 #ms = 20
-ms = int(log(max(P))/log(2) + 1)+1
-print "bits needed is ",ms
+#ms = 16
+#ms = 6
+#ms = 6
 
 #print P
 print "2^%d" % len(P)
@@ -127,9 +140,11 @@ for x in rret:
 pmat = np.asarray(pmat).astype(np.int).T
 print pmat
 
+print "mod targets"
+print re
 
 # crappy optimization is crappy
-"""
+import itertools
 fpmat = []
 ree = []
 
@@ -137,8 +152,12 @@ for i in range(len(re)):
   x = re[i]
   ff, _ = factor(x)
   # wrong
-  uff = sorted(list(set(ff)))
+  # not wrong anymore
+  #uff = sorted(list(set(ff)))
+  uff = [list(g) for k, g in itertools.groupby(ff)]
+
   for f in uff:
+    f = reduce(lambda x,y: x*y, f)
     fpmat.append(pmat[:, i] % f)
     ree.append(f)
   print uff
@@ -148,19 +167,23 @@ print fpmat.shape
 print fpmat
 print ree
 
-# for z3
 pmat = fpmat
 re = ree
-"""
+# crappy optimization done
+
+print "max possible sums"
+maxsum = pmat.sum(axis=0)
+print maxsum
+
+ms = int(log(max(maxsum))/log(2) + 1)
+print "bits needed is",ms
+
+#exit(0)
 
 """
 exit(0)
 
-print "mod targets"
-print re
 
-print "max possible sums"
-print pmat.sum(axis=0)
 
 print "FUCK PRODUCT IS BIG NUMBER"
 #print reduce(lambda x,y: x*y, map(int, pmat.sum(axis=0)))
@@ -239,7 +262,7 @@ for j in range(pmat.shape[1]):
   #s.add(ss == 0)
   
 print s.check()
-print s.model()
+#print s.model()
 print time()-start, "seconds elapsed"
 
 ret = [0]*pmat.shape[0]
@@ -250,6 +273,16 @@ for w in m:
 
 print ret
 print np.dot(ret, pmat), re, np.dot(ret, pmat) % np.asarray(re)
+
+# print solution
+out = []
+prod = 1
+for x,y in zip(P, ret):
+  if y:
+    out.append(x)
+    prod *= x
+print prod, prod%N, out
+
 
 """
 print s.to_smt2()
