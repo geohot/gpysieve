@@ -5,9 +5,15 @@ import gmpy
 
 primes = filter(gmpy.is_prime, range(1000))
 
+# P and N
+from findd import *
 # fast demo
-P = primes[20:30]
-N = reduce(lambda x,y: x*y, primes[0:4])
+#P = primes[20:80]
+#N = reduce(lambda x,y: x*y, primes[0:15])
+
+
+# this is a bullshit parameter
+ms = 2048
 
 #P = primes[20:35]
 #N = reduce(lambda x,y: x*y, primes[0:5])
@@ -17,6 +23,9 @@ print "2^%d" % len(P)
 print "finding", N
 
 ret, phi = factor(N)
+ret = sorted(list(set(ret)))
+print ret
+#exit(0)
 
 odds = log(phi)/log(2)
 print "2^%f" % odds
@@ -119,14 +128,12 @@ print np.dot(test, pmat), re, np.dot(test, pmat) % np.asarray(re)
 
 # for example, x*y === 1 mod 3, how do we know?
 
-print "WE ARE IMPORTING Z3"
+print "WE ARE IMPORTING Z3", pmat.shape
 from z3 import *
 from time import time
 
 start = time()
 s = Solver()
-
-ms = 8
 
 bb = []
 for i in range(pmat.shape[0]):
@@ -142,7 +149,9 @@ for i in range(pmat.shape[0]):
   #s.add(b >= 0), s.add(b <= 1)
 
   b = BitVec('b_'+str(i), ms)
-  s.add(b & 0xFE == 0)
+
+  # i think this is as close to free as you can get
+  s.add(b & ((1<<ms)-2) == 0)
 
   if i == 0:
     bor = b
@@ -162,7 +171,7 @@ for j in range(pmat.shape[1]):
     iv = BitVecVal(pmat[i,j], ms)
     if i == 0:
       ss = iv * bb[i]
-      print ss
+      #print ss
       #ss = If(bb[i], pmat[i,j], 0)
     else:
       ss += iv * bb[i]
@@ -179,6 +188,11 @@ for w in m:
   if m[w].as_long() == 1:
     ret[int(str(w).split("_")[1])] = 1
 
+print ret
 print np.dot(ret, pmat), re, np.dot(ret, pmat) % np.asarray(re)
+
+"""
+print s.to_smt2()
+"""
 
 
