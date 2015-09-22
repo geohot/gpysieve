@@ -21,6 +21,7 @@ def factor(n):
       nn /= d
     d += 1
 
+  """
   print ""
   print "phi: ", phi
     
@@ -29,6 +30,7 @@ def factor(n):
     rr = rr/gcd(rr, n)
     print pow(rr, phi, n),
   print ""
+  """
 
   return ret, phi
 

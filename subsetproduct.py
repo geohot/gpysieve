@@ -9,11 +9,11 @@ primes = filter(gmpy.is_prime, range(10000))
 # (1248, 70) takes ???? seconds
 #from findd import *
 
-# (100, 14) takes ??? seconds
-#P = primes[20:120]
+# (80, 14) takes ??? seconds
+#P = primes[20:100]
 #N = reduce(lambda x,y: x*y, primes[0:15])
 
-# (40, 9) takes 11 seconds
+# (40, 9) takes 11 seconds, 2 seconds with hacks
 P = primes[20:60]
 N = reduce(lambda x,y: x*y, primes[0:10])
 
@@ -125,17 +125,59 @@ for x in rret:
   pmat.append([quack[y%x] for y in P])
 
 pmat = np.asarray(pmat).astype(np.int).T
-#print pmat
+print pmat
 
-#test = [1,0,0,0,1,1,1,1]
+
+# crappy optimization is crappy
+"""
+fpmat = []
+ree = []
+
+for i in range(len(re)):
+  x = re[i]
+  ff, _ = factor(x)
+  # wrong
+  uff = sorted(list(set(ff)))
+  for f in uff:
+    fpmat.append(pmat[:, i] % f)
+    ree.append(f)
+  print uff
+fpmat = np.asarray(fpmat).T
+
+print fpmat.shape
+print fpmat
+print ree
+
+# for z3
+pmat = fpmat
+re = ree
+"""
 
 """
-test = [1,1,0,1,1,0,1,1]
-print test
-print np.dot(test, pmat), re, np.dot(test, pmat) % np.asarray(re)
+exit(0)
+
+print "mod targets"
+print re
+
+print "max possible sums"
+print pmat.sum(axis=0)
+
+print "FUCK PRODUCT IS BIG NUMBER"
+#print reduce(lambda x,y: x*y, map(int, pmat.sum(axis=0)))
+print reduce(lambda x,y: x*y, map(int, re))
+
+
+# note how all the mod targets must be === 0 mod 2, so the solution must also solve the subset xor problem
+
+#from sieve import gje
+#print gje(pmat%2)
+
+test=[0,0,0,0,1,0,1,0,0,0,1,0,0,0,0,1,1,0,0,0,1,1,1,0,0,0,1,0,0,1,0,1,1,1,0,0,0,1,0,0]
+# [  4  12  36  70  84  96  90 154 196]
+
+exit(0)
 """
 
-#exit(0)
 
 # for 7 -- 1 -> 0, 3 -> 1, 2 -> 2, 6 -> 3
 
