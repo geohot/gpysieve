@@ -9,6 +9,9 @@ primes = filter(gmpy.is_prime, range(1000))
 P = primes[20:30]
 N = reduce(lambda x,y: x*y, primes[0:4])
 
+#P = primes[20:35]
+#N = reduce(lambda x,y: x*y, primes[0:5])
+
 print P
 print "2^%d" % len(P)
 print "finding", N
@@ -118,21 +121,35 @@ print np.dot(test, pmat), re, np.dot(test, pmat) % np.asarray(re)
 
 print "WE ARE IMPORTING Z3"
 from z3 import *
+from time import time
 
+start = time()
 s = Solver()
+
+ms = 8
 
 bb = []
 for i in range(pmat.shape[0]):
-  b = Int('b_'+str(i))
-  s.add(b >= 0)
-  s.add(b <= 1)
 
   #b = Bool('b_'+str(i))
+
+  #b = BitVec('b_'+str(i), 1)
+  #bi = to_int(b)
+  #bi = BV2Int(b)
+  #b = BV2Int(BitVec('b_'+str(i), 1))
+
+  #b = Int('b_'+str(i))
+  #s.add(b >= 0), s.add(b <= 1)
+
+  b = BitVec('b_'+str(i), ms)
+  s.add(b & 0xFE == 0)
+
   if i == 0:
     bor = b
   else:
     #bor = Or(b, bor)
-    bor += b
+    #bor += b
+    bor |= b
   bb.append(b)
 
 # at least one must be True
@@ -141,14 +158,27 @@ s.add(bor > 0)
 
 for j in range(pmat.shape[1]):
   for i in range(pmat.shape[0]):
+    #iv = IntVal(pmat[i,j])
+    iv = BitVecVal(pmat[i,j], ms)
     if i == 0:
-      ss = bb[i] * pmat[i,j]
+      ss = iv * bb[i]
+      print ss
       #ss = If(bb[i], pmat[i,j], 0)
     else:
-      ss += bb[i] * pmat[i,j]
+      ss += iv * bb[i]
       #ss += If(bb[i], pmat[i,j], 0)
   s.add(ss % re[j] == 0)
   
 print s.check()
 print s.model()
+print time()-start, "seconds elapsed"
+
+ret = [0]*pmat.shape[0]
+m = s.model()
+for w in m:
+  if m[w].as_long() == 1:
+    ret[int(str(w).split("_")[1])] = 1
+
+print np.dot(ret, pmat), re, np.dot(ret, pmat) % np.asarray(re)
+
 
