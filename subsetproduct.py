@@ -5,11 +5,12 @@ import gmpy
 
 primes = filter(gmpy.is_prime, range(1000))
 
-P = primes[20:40]
+# fast demo
+P = primes[20:30]
+N = reduce(lambda x,y: x*y, primes[0:4])
+
 print P
 print "2^%d" % len(P)
-
-N = reduce(lambda x,y: x*y, primes[0:4])
 print "finding", N
 
 ret, phi = factor(N)
@@ -122,42 +123,32 @@ s = Solver()
 
 bb = []
 for i in range(pmat.shape[0]):
-  #b = Int('b_'+str(i))
-  #s.add(b >= 0)
-  #s.add(b <= 1)
-  b = Bool('b_'+str(i))
+  b = Int('b_'+str(i))
+  s.add(b >= 0)
+  s.add(b <= 1)
+
+  #b = Bool('b_'+str(i))
   if i == 0:
     bor = b
   else:
-    bor = Or(b, bor)
+    #bor = Or(b, bor)
+    bor += b
   bb.append(b)
 
 # at least one must be True
-s.add(bor == True)
+#s.add(bor == True)
+s.add(bor > 0)
 
 for j in range(pmat.shape[1]):
   for i in range(pmat.shape[0]):
     if i == 0:
-      #ss = bb[i] * pmat[i,j]
-      ss = If(bb[i], pmat[i,j], 0)
+      ss = bb[i] * pmat[i,j]
+      #ss = If(bb[i], pmat[i,j], 0)
     else:
-      #ss += bb[i] * pmat[i,j]
-      ss += If(bb[i], pmat[i,j], 0)
+      ss += bb[i] * pmat[i,j]
+      #ss += If(bb[i], pmat[i,j], 0)
   s.add(ss % re[j] == 0)
   
 print s.check()
 print s.model()
-
-
-"""
-test = 4336848158096904451
-print test
-
-for p in ret:
-  print test%p, p
-
-for p in P:
-  print test%p, p
-"""
-
 
