@@ -7,7 +7,7 @@ primes = filter(gmpy.is_prime, range(10000))
 
 # P and N
 # (1248, 70) takes ???? seconds
-from findd import *
+#from findd import *
 # max sum is 18 bits
 # after reduction it's (1248, 169)
 # each has max 256 possible
@@ -23,13 +23,13 @@ from findd import *
 #N = reduce(lambda x,y: x*y, primes[0:10])
 
 # swag
-P = primes[20:47]
-N = reduce(lambda x,y: x*y, primes[0:9])
+#P = primes[20:47]
+#N = reduce(lambda x,y: x*y, primes[0:9])
 
 # fast demo
 # (15, 4) takes 0.02 seconds
-#P = primes[20:28]
-#N = reduce(lambda x,y: x*y, primes[0:4])
+P = primes[20:28]
+N = reduce(lambda x,y: x*y, primes[0:4])
 
 # really fast demo, (10,4)
 #P = primes[20:40]
@@ -199,6 +199,26 @@ print pmat.shape
 print pmat
 print re
 
+"""
+from sieve import gje
+end = map(lambda x: x%2, re).index(1)
+
+is_mod_2 = pmat[:,0:end]%2
+
+aa, bb = gje(is_mod_2)
+nul = bb[list(aa.sum(axis=1)).index(0):].T
+#print aa
+print nul
+tes = [0,1,0,1,1,1,0,1,0,0,1,0,0,1,0,1,0,0,0,0,0,1,0,0,1,1,1]
+print tes
+
+print nul.shape
+"""
+
+#exit(0)
+
+
+
 # for each column we can find tiny disjoint sets that satisfy the condition, doesn't have to be maximal
 # hmm, might not work
 # for example this is a matrix A for the column
@@ -249,7 +269,6 @@ print reduce(lambda x,y: x*y, map(int, re))
 
 # note how all the mod targets must be === 0 mod 2, so the solution must also solve the subset xor problem
 
-#from sieve import gje
 #print gje(pmat%2)
 
 test=[0,0,0,0,1,0,1,0,0,0,1,0,0,0,0,1,1,0,0,0,1,1,1,0,0,0,1,0,0,1,0,1,1,1,0,0,0,1,0,0]
