@@ -45,7 +45,7 @@ primes = filter(gmpy.is_prime, range(10000))
 
 # really fast demo, (10,4)
 P = primes[20:48]
-N = reduce(lambda x,y: x*y, primes[0:5])
+N = reduce(lambda x,y: x*y, primes[0:7])
 
 # this is a bullshit parameter
 # max size any of the additions can be
@@ -211,6 +211,11 @@ for i in range(len(re)):
 botme = np.hstack((np.zeros(pmat.shape).T.astype(np.int), modme))
 lllme = np.vstack((lllme, botme))
 
+# HACKS TO BE BIG
+NNN = 113
+for i in range(pmat.shape[0], lllme.shape[0]):
+  lllme[:, i] *= NNN
+
 p = subprocess.Popen(['sage', 'LLL.sage', str(lllme.tolist())], stdout=subprocess.PIPE)
 lllmats, _ = p.communicate()
 print "sage done"
@@ -228,25 +233,27 @@ print lllme
 print "LLL"
 print lllmat
 
+
+# solve better
+
 for row in lllmat:
+  # has to be a solution
   if not all(row[pmat.shape[0]:] == 0):
     continue
 
-  #print row
-
-  onegood = False
-  isbad = False
-
-  for c in row:
-    if c != 0 and c != 1:
-      isbad = True
-      break
-    if c == 1:
-      onegood = True
-
-  #if onegood == True and isbad == False:
-  # good solution so far
+  # row of zeros is useless
   sol = row[0:pmat.shape[0]]
+
+  if all(sol == 0):
+    continue
+
+  #sol = abs(sol)
+
+  # mixed 1 and -1 is useless
+  if any(sol == 1) and any(sol == -1):
+    continue
+    #pass
+
   print sol, np.dot(sol, pmat), np.dot(sol, pmat)%re
 
   #print np.dot(row, lllmat)
