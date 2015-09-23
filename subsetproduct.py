@@ -2,6 +2,18 @@ import numpy as np
 from factor import factor
 from math import log
 import gmpy
+import os
+import subprocess
+
+def print_solution(ret):
+  # print solution
+  out = []
+  prod = 1
+  for x,y in zip(P, ret):
+    if y:
+      out.append(x)
+      prod *= x
+  print prod, prod%N, out
 
 primes = filter(gmpy.is_prime, range(10000))
 
@@ -32,7 +44,7 @@ primes = filter(gmpy.is_prime, range(10000))
 #N = reduce(lambda x,y: x*y, primes[0:4])
 
 # really fast demo, (10,4)
-P = primes[20:40]
+P = primes[20:50]
 N = reduce(lambda x,y: x*y, primes[0:6])
 
 # this is a bullshit parameter
@@ -201,8 +213,8 @@ print re
 
 # ITS LLL O'CLOCK
 
-from liblll import *
 
+# build LLL matrix
 lllme = np.hstack((np.identity(pmat.shape[0], dtype=np.int), pmat))
 modme = np.identity(pmat.shape[1], dtype=np.int)
 for i in range(len(re)):
@@ -210,10 +222,42 @@ for i in range(len(re)):
 botme = np.hstack((np.zeros(pmat.shape).T.astype(np.int), modme))
 lllme = np.vstack((lllme, botme))
 
+
+print lllme
+p = subprocess.Popen(['sage', 'LLL.sage', str(lllme.tolist())], stdout=subprocess.PIPE)
+lllmats, _ = p.communicate()
+print "sage done"
+lllmat = []
+for ln in lllmats.split("\n")[:-1]:
+  lllmat.append(map(int, ln.strip('[]').split()))
+lllmat = np.asarray(lllmat)
+print lllmat.shape
+
+for row in lllmat:
+  onegood = False
+  isbad = False
+
+  for c in row:
+    if c != 0 and c != 1:
+      isbad = True
+      break
+    if c == 1:
+      onegood = True
+
+  if onegood == True and isbad == False:
+    # good solution so far
+    if row[pmat.shape[0]:].sum() == 0:
+      sol = row[0:pmat.shape[0]]
+      print sol, np.dot(sol, pmat), np.dot(sol, pmat)%re
+      print_solution(sol)
+
+exit(0)
+
+# run LLL on matrix
+from liblll import *
 print lllme
 lllmat = create_matrix(lllme)
 lllred = lll_reduction(lllmat)
-
 print islll(lllred)
 print_mat(lllred)
 
@@ -467,13 +511,5 @@ for w in m:
 print ret
 print np.dot(ret, pmat), re, np.dot(ret, pmat) % np.asarray(re)
 
-# print solution
-out = []
-prod = 1
-for x,y in zip(P, ret):
-  if y:
-    out.append(x)
-    prod *= x
-print prod, prod%N, out
-
+print_solution(ret)
 
