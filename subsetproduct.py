@@ -13,7 +13,7 @@ def print_solution(ret):
     if y:
       out.append(x)
       prod *= x
-  print prod, prod%N, out
+  print N, prod, prod%N, out
 
 primes = filter(gmpy.is_prime, range(10000))
 
@@ -26,8 +26,8 @@ primes = filter(gmpy.is_prime, range(10000))
 
 # (60, 14) takes ??? seconds
 # reduce to (60, 27)
-#P = primes[20:70]
-#N = reduce(lambda x,y: x*y, primes[0:12])
+#P = primes[20:200]
+#N = reduce(lambda x,y: x*y, primes[0:10])
 
 # (40, 9) takes 11 seconds, 2 seconds with hacks
 # reduce to (40, 15)
@@ -44,8 +44,8 @@ primes = filter(gmpy.is_prime, range(10000))
 #N = reduce(lambda x,y: x*y, primes[0:4])
 
 # really fast demo, (10,4)
-P = primes[20:50]
-N = reduce(lambda x,y: x*y, primes[0:6])
+P = primes[20:48]
+N = reduce(lambda x,y: x*y, primes[0:5])
 
 # this is a bullshit parameter
 # max size any of the additions can be
@@ -177,17 +177,6 @@ for i in range(len(re)):
     fpmat.append(pmat[:, i] % f)
     ree.append(f)
 
-  # this doesn't work because of fucking carries
-  """
-  uff = ff
-  tmp = pmat[:, i]
-  for f in uff:
-    #f = reduce(lambda x,y: x*y, f)
-    fpmat.append(tmp % f)
-    tmp /= f
-    ree.append(f)
-  """
-
   print uff
 fpmat = np.asarray(fpmat).T
 
@@ -222,8 +211,6 @@ for i in range(len(re)):
 botme = np.hstack((np.zeros(pmat.shape).T.astype(np.int), modme))
 lllme = np.vstack((lllme, botme))
 
-
-print lllme
 p = subprocess.Popen(['sage', 'LLL.sage', str(lllme.tolist())], stdout=subprocess.PIPE)
 lllmats, _ = p.communicate()
 print "sage done"
@@ -231,9 +218,22 @@ lllmat = []
 for ln in lllmats.split("\n")[:-1]:
   lllmat.append(map(int, ln.strip('[]').split()))
 lllmat = np.asarray(lllmat)
-print lllmat.shape
+#print lllmat.shape
+
+# print good
+np.set_printoptions(threshold='nan')
+np.set_printoptions(linewidth=np.inf)
+# hacks
+print lllme
+print "LLL"
+print lllmat
 
 for row in lllmat:
+  if not all(row[pmat.shape[0]:] == 0):
+    continue
+
+  #print row
+
   onegood = False
   isbad = False
 
@@ -244,12 +244,13 @@ for row in lllmat:
     if c == 1:
       onegood = True
 
-  if onegood == True and isbad == False:
-    # good solution so far
-    if row[pmat.shape[0]:].sum() == 0:
-      sol = row[0:pmat.shape[0]]
-      print sol, np.dot(sol, pmat), np.dot(sol, pmat)%re
-      print_solution(sol)
+  #if onegood == True and isbad == False:
+  # good solution so far
+  sol = row[0:pmat.shape[0]]
+  print sol, np.dot(sol, pmat), np.dot(sol, pmat)%re
+
+  #print np.dot(row, lllmat)
+  print_solution(sol)
 
 exit(0)
 
