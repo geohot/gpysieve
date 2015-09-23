@@ -7,13 +7,13 @@ primes = filter(gmpy.is_prime, range(10000))
 
 # P and N
 # (1248, 70) takes ???? seconds
-from findd import *
+#from findd import *
 # max sum is 18 bits
 # after reduction it's (1248, 169)
 
 # (60, 14) takes ??? seconds
 # reduce to (60, 27)
-#P = primes[20:70]
+#P = primes[20:200]
 #N = reduce(lambda x,y: x*y, primes[0:12])
 
 # (40, 9) takes 11 seconds, 2 seconds with hacks
@@ -212,13 +212,17 @@ exit(0)
 # for 7 -- 1 -> 0, 3 -> 1, 2 -> 2, 6 -> 3
 
 # for example, x*y === 1 mod 3, how do we know?
+#exit(0)
 
 print "WE ARE IMPORTING Z3", pmat.shape
 from z3 import *
 from time import time
 
 start = time()
-s = Solver()
+#s = Solver()
+s = Goal()
+#ONE = (1<<ms)-1
+ONE = 1
 
 bb = []
 for i in range(pmat.shape[0]):
@@ -236,7 +240,15 @@ for i in range(pmat.shape[0]):
   b = BitVec('b_'+str(i), ms)
 
   # i think this is as close to free as you can get
-  s.add(b & ((1<<ms)-2) == 0)
+  #s.add(b == 0 or b == ONE)
+  #for j in range(ms):
+  #  s.add((b&1) == (b>>j))
+
+  if ONE == 1:
+    s.add(b & ((1<<ms)-2) == 0)
+  else:
+    s.add(Or(b == 0, b == ONE))
+
 
   if i == 0:
     bor = b
@@ -248,7 +260,7 @@ for i in range(pmat.shape[0]):
 
 # at least one must be True
 #s.add(bor == True)
-s.add(bor == 1)
+s.add(bor == ONE)
 
 for j in range(pmat.shape[1]):
   mod = re[j]
@@ -282,10 +294,18 @@ for j in range(pmat.shape[1]):
         #ss += If(bb[i], pmat[i,j], 0)
     s.add(ss % mod == 0)
     #s.add(ss == 0)
-  
+
+
+from z3_out import z3_to_cnf, write_cnf
+ncnf = z3_to_cnf(s)
+write_cnf(ncnf, "tmp")
+
+"""
 print s.check()
 #print s.model()
 print time()-start, "seconds elapsed"
+
+#exit(0)
 
 ret = [0]*pmat.shape[0]
 m = s.model()
@@ -304,6 +324,7 @@ for x,y in zip(P, ret):
     out.append(x)
     prod *= x
 print prod, prod%N, out
+"""
 
 
 """
