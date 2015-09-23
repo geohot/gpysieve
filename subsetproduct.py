@@ -4,6 +4,7 @@ from math import log
 import gmpy
 import os
 import subprocess
+from sieve import gjee
 
 def print_solution(ret):
   # print solution
@@ -44,8 +45,8 @@ primes = filter(gmpy.is_prime, range(10000))
 #N = reduce(lambda x,y: x*y, primes[0:4])
 
 # really fast demo, (10,4)
-P = primes[20:48]
-N = reduce(lambda x,y: x*y, primes[0:7])
+P = primes[20:300]
+N = reduce(lambda x,y: x*y, primes[0:9])
 
 # this is a bullshit parameter
 # max size any of the additions can be
@@ -212,13 +213,18 @@ botme = np.hstack((np.zeros(pmat.shape).T.astype(np.int), modme))
 lllme = np.vstack((lllme, botme))
 
 # HACKS TO BE BIG
-NNN = 113
+NNN = 19
 for i in range(pmat.shape[0], lllme.shape[0]):
   lllme[:, i] *= NNN
 
-p = subprocess.Popen(['sage', 'LLL.sage', str(lllme.tolist())], stdout=subprocess.PIPE)
+f = open("/tmp/lll_me_please", "w")
+f.write(str(lllme.tolist()))
+f.close()
+
+p = subprocess.Popen(['sage', 'LLL.sage'], stdout=subprocess.PIPE)
 lllmats, _ = p.communicate()
 print "sage done"
+
 lllmat = []
 for ln in lllmats.split("\n")[:-1]:
   lllmat.append(map(int, ln.strip('[]').split()))
@@ -229,9 +235,21 @@ lllmat = np.asarray(lllmat)
 np.set_printoptions(threshold='nan')
 np.set_printoptions(linewidth=np.inf)
 # hacks
-print lllme
-print "LLL"
-print lllmat
+#print lllme
+#print "LLL"
+#print lllmat
+
+
+# find a all 1 vector from these
+lm = lllmat[0:pmat.shape[0], 0:pmat.shape[0]]
+#print lm
+print "hamming weights", abs(lm).sum(axis=1)
+
+print "experiment"
+#print gjee(lm)
+#print np.asarray(sorted(lm.as_list()))
+
+#exit(0)
 
 
 # solve better
@@ -247,7 +265,9 @@ for row in lllmat:
   if all(sol == 0):
     continue
 
-  #sol = abs(sol)
+  # fuck 2's
+  if any(abs(sol) > 1):
+    continue
 
   # mixed 1 and -1 is useless
   if any(sol == 1) and any(sol == -1):
@@ -261,6 +281,8 @@ for row in lllmat:
 
 exit(0)
 
+
+"""
 # run LLL on matrix
 from liblll import *
 print lllme
@@ -268,9 +290,7 @@ lllmat = create_matrix(lllme)
 lllred = lll_reduction(lllmat)
 print islll(lllred)
 print_mat(lllred)
-
-
-
+"""
 
 
 """
@@ -280,7 +300,6 @@ rep = map(lambda x: factor(x)[0][0], re)
 repp = reduce(lambda x,y: x*y, list(set(rep)))
 print rep, repp
 
-from sieve import gjee
 pmat_id = np.hstack((pmat % rep, np.identity(pmat.shape[0], dtype=np.int)))
 sol = gjee(pmat_id, rep + [repp]*pmat.shape[0], len(rep))
 #print sol
