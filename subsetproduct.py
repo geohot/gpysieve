@@ -199,7 +199,29 @@ print pmat.shape
 print pmat
 print re
 
+# ITS LLL O'CLOCK
 
+from liblll import *
+
+lllme = np.hstack((np.identity(pmat.shape[0], dtype=np.int), pmat))
+modme = np.identity(pmat.shape[1], dtype=np.int)
+for i in range(len(re)):
+  modme[i][i] = re[i]
+botme = np.hstack((np.zeros(pmat.shape).T.astype(np.int), modme))
+lllme = np.vstack((lllme, botme))
+
+print lllme
+lllmat = create_matrix(lllme)
+lllred = lll_reduction(lllmat)
+
+print islll(lllred)
+print_mat(lllred)
+
+
+
+
+
+"""
 # USELESS IDEAS START HERE
 
 rep = map(lambda x: factor(x)[0][0], re)
@@ -232,6 +254,7 @@ print nul
 print nul.shape
 
 print "searching 2 ^",(nul.shape[1] - (len(P)-odds))
+"""
 
 """
 # solve Ax = b
@@ -283,7 +306,7 @@ print tes[:, 0]
 # what i really want here is a way to factorize each condition into multiple mod 2 things
 
 
-#exit(0)
+exit(0)
 
 # crappy optimization done
 
