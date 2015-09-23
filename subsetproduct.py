@@ -27,8 +27,8 @@ primes = filter(gmpy.is_prime, range(10000))
 
 # (60, 14) takes ??? seconds
 # reduce to (60, 27)
-#P = primes[20:200]
-#N = reduce(lambda x,y: x*y, primes[0:10])
+P = primes[20:200]
+N = reduce(lambda x,y: x*y, primes[0:10])
 
 # (40, 9) takes 11 seconds, 2 seconds with hacks
 # reduce to (40, 15)
@@ -41,12 +41,12 @@ primes = filter(gmpy.is_prime, range(10000))
 
 # fast demo
 # (15, 4) takes 0.02 seconds
-#P = primes[20:28]
-#N = reduce(lambda x,y: x*y, primes[0:4])
+#P = primes[20:50]
+#N = reduce(lambda x,y: x*y, primes[0:9])
 
 # really fast demo, (10,4)
-P = primes[20:300]
-N = reduce(lambda x,y: x*y, primes[0:9])
+#P = primes[20:300]
+#N = reduce(lambda x,y: x*y, primes[0:9])
 
 # this is a bullshit parameter
 # max size any of the additions can be
@@ -217,18 +217,24 @@ NNN = 19
 for i in range(pmat.shape[0], lllme.shape[0]):
   lllme[:, i] *= NNN
 
-f = open("/tmp/lll_me_please", "w")
-f.write(str(lllme.tolist()))
-f.close()
+def run_lll(lllme):
+  print "calling sage", lllme.shape
+  f = open("/tmp/lll_me_please", "w")
+  f.write(str(lllme.tolist()))
+  f.close()
+  p = subprocess.Popen(['sage', 'LLL.sage'], stdout=subprocess.PIPE)
+  lllmats, _ = p.communicate()
 
-p = subprocess.Popen(['sage', 'LLL.sage'], stdout=subprocess.PIPE)
-lllmats, _ = p.communicate()
-print "sage done"
+  lllmat = []
+  for ln in lllmats.split("\n")[:-1]:
+    lllmat.append(map(int, ln.strip('[]').split()))
+  lllmat = np.asarray(lllmat)
+  print "sage done"
 
-lllmat = []
-for ln in lllmats.split("\n")[:-1]:
-  lllmat.append(map(int, ln.strip('[]').split()))
-lllmat = np.asarray(lllmat)
+  return lllmat
+
+lllmat = run_lll(lllme)
+
 #print lllmat.shape
 
 # print good
@@ -241,19 +247,27 @@ np.set_printoptions(linewidth=np.inf)
 
 
 # find a all 1 vector from these
-lm = lllmat[0:pmat.shape[0], 0:pmat.shape[0]]
-#print lm
-print "hamming weights", abs(lm).sum(axis=1)
+good_rows = filter(lambda i: all(lllmat[i, pmat.shape[0]:] == 0), range(lllmat.shape[0]))
+lm = lllmat[good_rows, 0:pmat.shape[0]]
 
-print "experiment"
+print "hamming weights", abs(lm).sum(axis=1)
+#print lm
+
+"""
+lm[lm <= -1] *= 113
+print lm
+print "NEW"
+lm2 = run_lll(lm)
+print lm2
+"""
+
 #print gjee(lm)
 #print np.asarray(sorted(lm.as_list()))
 
 #exit(0)
 
 
-# solve better
-
+# solve better than this
 for row in lllmat:
   # has to be a solution
   if not all(row[pmat.shape[0]:] == 0):
