@@ -7,13 +7,14 @@ primes = filter(gmpy.is_prime, range(10000))
 
 # P and N
 # (1248, 70) takes ???? seconds
-#from findd import *
+from findd import *
 # max sum is 18 bits
 # after reduction it's (1248, 169)
+# each has max 256 possible
 
 # (60, 14) takes ??? seconds
 # reduce to (60, 27)
-#P = primes[20:200]
+#P = primes[20:70]
 #N = reduce(lambda x,y: x*y, primes[0:12])
 
 # (40, 9) takes 11 seconds, 2 seconds with hacks
@@ -22,13 +23,13 @@ primes = filter(gmpy.is_prime, range(10000))
 #N = reduce(lambda x,y: x*y, primes[0:10])
 
 # swag
-P = primes[20:60]
+P = primes[20:47]
 N = reduce(lambda x,y: x*y, primes[0:9])
 
 # fast demo
 # (15, 4) takes 0.02 seconds
-#P = primes[20:35]
-#N = reduce(lambda x,y: x*y, primes[0:5])
+#P = primes[20:28]
+#N = reduce(lambda x,y: x*y, primes[0:4])
 
 # really fast demo, (10,4)
 #P = primes[20:40]
@@ -47,6 +48,7 @@ print "2^%d" % len(P)
 print "finding", N
 
 ret, phi = factor(N)
+print phi
 ret = sorted(list(set(ret)))
 print ret
 #exit(0)
@@ -143,6 +145,8 @@ print pmat
 print "mod targets"
 print re
 
+#exit(0)
+
 # crappy optimization is crappy
 import itertools
 fpmat = []
@@ -154,17 +158,38 @@ for i in range(len(re)):
   # wrong
   # not wrong anymore
   #uff = sorted(list(set(ff)))
-  uff = [list(g) for k, g in itertools.groupby(ff)]
 
+  uff = [list(g) for k, g in itertools.groupby(ff)]
   for f in uff:
     f = reduce(lambda x,y: x*y, f)
     fpmat.append(pmat[:, i] % f)
     ree.append(f)
+
+  # this doesn't work because of fucking carries
+  """
+  uff = ff
+  tmp = pmat[:, i]
+  for f in uff:
+    #f = reduce(lambda x,y: x*y, f)
+    fpmat.append(tmp % f)
+    tmp /= f
+    ree.append(f)
+  """
+
   print uff
 fpmat = np.asarray(fpmat).T
 
 
-order = sorted(zip(ree, range(len(ree))))
+def cmpr(x, y):
+  a = x[0]
+  b = y[0]
+  if a%2 == 0:
+    a -= 100000
+  if b%2 == 0:
+    b -= 100000
+  return cmp(a,b)
+
+order = sorted(zip(ree, range(len(ree))), cmpr)
 print order
 
 pmat = fpmat[:, map(lambda x: x[1], order)]
@@ -174,9 +199,34 @@ print pmat.shape
 print pmat
 print re
 
+# for each column we can find tiny disjoint sets that satisfy the condition, doesn't have to be maximal
+# hmm, might not work
+# for example this is a matrix A for the column
+# then we find an x s.t. Ax = Bx = ... = Zx
+
+# what i really want here is a way to factorize each condition into multiple mod 2 things
+
+
 #exit(0)
 
 # crappy optimization done
+
+"""
+# this is wrong???
+prod = 1
+# deoptimize
+ri = []
+for x in re:
+  ri.append(prod)
+  prod *= x
+
+# is subset sum mod bullshit
+theset = list(np.dot(pmat, ri))
+print theset, prod
+
+exit(0)
+"""
+
 
 print "max possible sums"
 maxsum = pmat.sum(axis=0)
@@ -185,7 +235,7 @@ print maxsum
 ms = int(log(max(maxsum))/log(2) + 1)
 print "bits needed is",ms
 
-#exit(0)
+
 
 """
 exit(0)
@@ -219,8 +269,8 @@ from z3 import *
 from time import time
 
 start = time()
-#s = Solver()
-s = Goal()
+s = Solver()
+#s = Goal()
 #ONE = (1<<ms)-1
 ONE = 1
 
@@ -296,11 +346,14 @@ for j in range(pmat.shape[1]):
     #s.add(ss == 0)
 
 
-from z3_out import z3_to_cnf, write_cnf
-ncnf = z3_to_cnf(s)
-write_cnf(ncnf, "tmp")
-
 """
+from z3_out import z3_to_cnf, write_cnf
+print "converting to cnf..."
+ncnf = z3_to_cnf(s)
+print "writing output"
+write_cnf(ncnf, "tmp")
+"""
+
 print s.check()
 #print s.model()
 print time()-start, "seconds elapsed"
@@ -324,11 +377,5 @@ for x,y in zip(P, ret):
     out.append(x)
     prod *= x
 print prod, prod%N, out
-"""
-
-
-"""
-print s.to_smt2()
-"""
 
 

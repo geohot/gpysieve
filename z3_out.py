@@ -5,6 +5,7 @@ def z3_to_cnf(g):
   subgoal = t(g)
   assert len(subgoal) == 1
   sg = subgoal[0]
+  print "got subgoal"
 
   def proc(aa):
       aa = str(aa)
@@ -18,7 +19,7 @@ def z3_to_cnf(g):
       return ret
 
   cnf = map(proc, sg)
-
+  print "parsed cnf"
 
   abs_flat_cnf = map(abs, [item for sublist in cnf for item in sublist])
 
@@ -30,7 +31,6 @@ def z3_to_cnf(g):
   print "vars", varcount
 
   return [[repl[k] for k in c] for c in cnf]
-
 
 import itertools
 def write_cnf(ncnf, filename):
