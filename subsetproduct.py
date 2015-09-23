@@ -19,8 +19,8 @@ primes = filter(gmpy.is_prime, range(10000))
 
 # (40, 9) takes 11 seconds, 2 seconds with hacks
 # reduce to (40, 15)
-#P = primes[20:60]
-#N = reduce(lambda x,y: x*y, primes[0:10])
+#P = primes[20:50]
+#N = reduce(lambda x,y: x*y, primes[0:9])
 
 # swag
 #P = primes[20:47]
@@ -28,12 +28,12 @@ primes = filter(gmpy.is_prime, range(10000))
 
 # fast demo
 # (15, 4) takes 0.02 seconds
-P = primes[20:28]
-N = reduce(lambda x,y: x*y, primes[0:4])
+#P = primes[20:28]
+#N = reduce(lambda x,y: x*y, primes[0:4])
 
 # really fast demo, (10,4)
-#P = primes[20:40]
-#N = reduce(lambda x,y: x*y, primes[0:5])
+P = primes[20:40]
+N = reduce(lambda x,y: x*y, primes[0:6])
 
 # this is a bullshit parameter
 # max size any of the additions can be
@@ -199,20 +199,76 @@ print pmat.shape
 print pmat
 print re
 
-"""
-from sieve import gje
+
+# USELESS IDEAS START HERE
+
+rep = map(lambda x: factor(x)[0][0], re)
+repp = reduce(lambda x,y: x*y, list(set(rep)))
+print rep, repp
+
+from sieve import gjee
+pmat_id = np.hstack((pmat % rep, np.identity(pmat.shape[0], dtype=np.int)))
+sol = gjee(pmat_id, rep + [repp]*pmat.shape[0], len(rep))
+#print sol
+
+nul = sol[pmat.shape[1]:, pmat.shape[1]:]
+for r in nul:
+  ss = np.dot(r, pmat) 
+  #print r, ss, ss%re
+  #print ss%re
+  print r, ss%re
+
+exit(0)
+
 end = map(lambda x: x%2, re).index(1)
 
 is_mod_2 = pmat[:,0:end]%2
+is_mod_2_id = np.concatenate((is_mod_2, np.identity(is_mod_2.shape[0], dtype=np.int)), axis=1)
+#print is_mod_2_id
 
+aa = gjee(is_mod_2_id)
+nul = aa[is_mod_2.shape[1]:, is_mod_2.shape[1]:].T
+print nul
+print nul.shape
+
+print "searching 2 ^",(nul.shape[1] - (len(P)-odds))
+
+"""
+# solve Ax = b
+tes = np.asarray([0,1,0,1,1,1,0,1,0,0,1,0,0,1,0,1,0,0,0,0,0,1,0,0,1,1,1])
+swag = gjee(np.hstack((nul, tes.reshape(-1, 1))))
+swag = swag[:nul.shape[1], -1]
+print swag
+print np.dot(nul, swag)%2
+print tes
+"""
+
+
+"""
+print nul
+print nul.shape
+
+print tes
+"""
+
+"""
 aa, bb = gje(is_mod_2)
 nul = bb[list(aa.sum(axis=1)).index(0):].T
 #print aa
 print nul
-tes = [0,1,0,1,1,1,0,1,0,0,1,0,0,1,0,1,0,0,0,0,0,1,0,0,1,1,1]
-print tes
+tes = np.asarray(tes).reshape(len(tes), 1)
+aug = np.concatenate((nul, tes), axis=1)
+print aug
+exit(0)
 
-print nul.shape
+#print tes
+#print nul.shape
+
+#slv = gje(
+#print slv
+
+print np.dot(slv, nul)
+print tes[:, 0]
 """
 
 #exit(0)

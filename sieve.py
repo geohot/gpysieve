@@ -41,6 +41,54 @@ def gje(a):
 
   return a, track%2
 
+import gmpy
+# hella bootleg
+def gjee(a, mod=None, er=None):
+  ova = 0
+
+  # mod the matrix!
+  #a %= mod
+
+  if mod == None:
+    mod = [2] * a.shape[1]
+
+  if er == None:
+    er = a.shape[1]
+
+  # loop through the columns
+  #for pivot in range(min(len(mod), a.shape[1])):
+  for pivot in range(er):
+    found = None
+
+    #a[pivot] %= mod[pivot]
+
+    # find a row i with the pivot p after and including ova
+    for i in range(ova, a.shape[0]):
+      # found a nonzero pivot row
+      if a[i, pivot] != 0:
+        if found is None:
+          # found it, switch it with the top row
+          if i != ova:
+            a[[ova, i],:] = a[[i, ova],:]
+          found = ova
+          ova = ova + 1
+        else:
+          # otherwise, we have found something
+          # we want the a[i][pivot] to be 0
+          # so solve for x in 0 == a[i][pivot] + x * a[found][pivot] mod <mod>
+          # -a[i][pivot] * inv(a[found][pivot]) == x
+          #print "INVERT", a[found][pivot], mod, gmpy.invert(a[found][pivot], mod)
+          inv = gmpy.invert(a[found][pivot], mod[pivot])
+          if inv == 0:
+            print "OOPS", a[i][pivot], a[found][pivot], mod[pivot]
+          x = -a[i][pivot] * inv
+          #print pivot, i, a[i][pivot], found, a[found][pivot]
+          a[i] += a[found] * x
+          a[i] %= mod
+          #print a[i][pivot]
+
+  return a
+
 def factorize(zn, P):
   ret = []
   while zn != 1:

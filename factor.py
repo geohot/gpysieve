@@ -15,7 +15,7 @@ def factor(n):
       if not done:
         phi = phi - (phi/d)
         done = True
-      print d,
+      #print d,
       ret.append(d)
       sys.stdout.flush()
       nn /= d
