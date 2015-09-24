@@ -2,4 +2,4 @@
 *.pyc
 ext
 tmp
-LLL.sage.py
+*.sage.py

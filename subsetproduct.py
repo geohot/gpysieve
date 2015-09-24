@@ -27,17 +27,17 @@ primes = filter(gmpy.is_prime, range(10000))
 
 # (60, 14) takes ??? seconds
 # reduce to (60, 27)
-P = primes[20:60]
-N = reduce(lambda x,y: x*y, primes[0:10])
+#P = primes[20:60]
+#N = reduce(lambda x,y: x*y, primes[0:10])
 
 # (40, 9) takes 11 seconds, 2 seconds with hacks
 # reduce to (40, 15)
-#P = primes[20:50]
-#N = reduce(lambda x,y: x*y, primes[0:9])
+P = primes[20:42]
+N = reduce(lambda x,y: x*y, primes[0:8])
 
 # swag
-P = primes[20:30]
-N = reduce(lambda x,y: x*y, primes[0:4])
+#P = primes[20:30]
+#N = reduce(lambda x,y: x*y, primes[0:4])
 
 # fast demo
 # (15, 4) takes 0.02 seconds
@@ -217,12 +217,12 @@ NNN = 19
 for i in range(pmat.shape[0], lllme.shape[0]):
   lllme[:, i] *= NNN
 
-def run_lll(lllme):
+def run_lll(lllme, fn='LLL.sage'):
   print "calling sage", lllme.shape
   f = open("/tmp/lll_me_please", "w")
   f.write(str(lllme.tolist()))
   f.close()
-  p = subprocess.Popen(['sage', 'LLL.sage'], stdout=subprocess.PIPE)
+  p = subprocess.Popen(['sage', fn], stdout=subprocess.PIPE)
   lllmats, _ = p.communicate()
 
   lllmat = []
@@ -253,9 +253,17 @@ lm = lllmat[good_rows, 0:pmat.shape[0]]
 print "hamming weights", abs(lm).sum(axis=1)
 print lm
 
-AB = np.hstack((lm.T, np.identity(lm.shape[0], dtype=np.int), np.asarray([1]*lm.shape[0]).reshape((-1, 1))))
+AB = np.hstack((lm.T, np.identity(lm.shape[0], dtype=np.int)*-1))
 print AB
 print AB.shape
+
+# part 2
+lll = run_lll(AB, fn='matmat.sage')
+
+print lll[(lll.shape[0]/2):, (lll.shape[0]/2):]
+
+exit(0)
+
 
 # LOL
 import requests
@@ -266,9 +274,12 @@ data['matrix'] = " ".join(str(AB).replace("[", "").replace("]", "").replace("\n"
 data['SUBMIT'] = 'GO'
 print "wtf this shit uses import requests"
 r = requests.post("http://www.numbertheory.org/php/axb.php", data=data)
+open("ext/out.html", "w").write(r.text)
+
 soll = map(int, r.text.split("Y = (")[1].split(")")[0].split(','))
 print soll
 
+# right half must be all 0 or 1
 mul = soll[0:AB.shape[0]]
 print mul
 
@@ -278,7 +289,6 @@ print rsol
 
 print_solution(rsol)
 
-#open("ext/out.html", "w").write(r.text)
 
 exit(0)
 
