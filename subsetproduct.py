@@ -27,13 +27,13 @@ primes = filter(gmpy.is_prime, range(10000))
 
 # (60, 14) takes ??? seconds
 # reduce to (60, 27)
-#P = primes[20:60]
-#N = reduce(lambda x,y: x*y, primes[0:10])
+P = primes[20:120]
+N = reduce(lambda x,y: x*y, primes[0:20])
 
 # (40, 9) takes 11 seconds, 2 seconds with hacks
 # reduce to (40, 15)
-P = primes[20:35]
-N = reduce(lambda x,y: x*y, primes[0:6])
+#P = primes[20:35]
+#N = reduce(lambda x,y: x*y, primes[0:6])
 
 # swag
 #P = primes[20:30]
@@ -41,8 +41,8 @@ N = reduce(lambda x,y: x*y, primes[0:6])
 
 # fast demo
 # (15, 4) takes 0.02 seconds
-#P = primes[20:50]
-#N = reduce(lambda x,y: x*y, primes[0:9])
+P = primes[20:45]
+N = reduce(lambda x,y: x*y, primes[0:8])
 
 # really fast demo, (10,4)
 #P = primes[20:300]
@@ -257,19 +257,75 @@ AB = np.hstack((lm.T, np.identity(lm.shape[0], dtype=np.int)*1))
 print AB
 print AB.shape
 
+def runlp(AB):
+  f = open("ext/tmp.lp", "w")
+  f.write("maximize\n")
+  f.write("x1\n")
+  f.write("subject to\n")
+
+  for row in range(AB.shape[0]):
+    s = []
+    for i in range(AB.shape[1]):
+      if AB[row,i] != 0:
+        if AB[row,i] == 1:
+          s.append("x" + str(i+1))
+        elif AB[row,i] == -1:
+          s.append("-x" + str(i+1))
+        else:
+          s.append(str(AB[row,i]) + "x" + str(i+1))
+    f.write(' + '.join(s).replace("+ -", "- ")+" = 1\n")
+
+  f.write("bounds\n")
+  for i in range(AB.shape[1]/2, AB.shape[1]):
+    f.write("x"+str(i+1)+">0\n")
+    f.write("x"+str(i+1)+"<1\n")
+
+  f.write("integer\n")
+  for i in range(AB.shape[1]):
+    f.write("x"+str(i+1)+"\n")
+
+  f.write("end\n")
+  f.close()
+
+  os.system("glpsol --cpxlp ext/tmp.lp --output ext/tmp.out")
+
+  dat = open("ext/tmp.out").read().split("Column name")[1].split("\n")[2:2+AB.shape[1]]
+
+  sol = [0]*AB.shape[1]
+
+  for c in dat:
+    tmp = c.split()
+    sol[int(tmp[1][1:])-1] = int(tmp[3])
+
+  return sol
+
+sol = runlp(AB)
+print sol
+print np.dot(AB, sol)
+
+hf = AB.shape[1]/2
+sol = np.dot(AB, sol[0:hf] + [0]*hf)
+print_solution(sol)
+
+
+exit(0)
+
+"""
 # Z3
 print "It's Z3 time"
 from z3 import *
 
 s = Solver()
 xx = []
-ms = 4
+ms = 8
 for i in range(AB.shape[1]):
   x = Int('x_'+str(i))
+  #x = BitVec('x_'+str(i), ms)
   xx.append(x)
   if i >= AB.shape[1]/2:
     s.add(x >= 0)
     s.add(x <= 1)
+    #s.add(x & ((1<<ms)-2) == 0)
     pass
 
 for j in range(AB.shape[0]):
@@ -298,22 +354,20 @@ hf = AB.shape[1]/2
 sol = np.dot(AB, ret[0:hf] + [0]*hf)
 
 print_solution(sol)
-
 exit(0)
-
+"""
 
 
 # part 2
 lll = run_lll(AB, fn='matmat.sage')
-
 print lll[(lll.shape[0]/2):, (lll.shape[0]/2):]
-
 exit(0)
 
 
 # LOL
 import requests
 data = {}
+AB = np.hstack((AB, np.asarray([1]*AB.shape[0]).reshape(-1, 1)))
 data['rows'] = str(AB.shape[0])
 data['cols'] = str(AB.shape[1]-1)
 data['matrix'] = " ".join(str(AB).replace("[", "").replace("]", "").replace("\n", " ").split(" "))
