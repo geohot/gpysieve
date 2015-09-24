@@ -36,8 +36,8 @@ P = primes[20:42]
 N = reduce(lambda x,y: x*y, primes[0:8])
 
 # swag
-#P = primes[20:30]
-#N = reduce(lambda x,y: x*y, primes[0:4])
+P = primes[20:30]
+N = reduce(lambda x,y: x*y, primes[0:4])
 
 # fast demo
 # (15, 4) takes 0.02 seconds
@@ -253,9 +253,52 @@ lm = lllmat[good_rows, 0:pmat.shape[0]]
 print "hamming weights", abs(lm).sum(axis=1)
 print lm
 
-AB = np.hstack((lm.T, np.identity(lm.shape[0], dtype=np.int)*-1))
+AB = np.hstack((lm.T, np.identity(lm.shape[0], dtype=np.int)*1))
 print AB
 print AB.shape
+
+# Z3
+print "It's Z3 time"
+from z3 import *
+
+s = Solver()
+xx = []
+ms = 4
+for i in range(AB.shape[1]):
+  x = Int('x_'+str(i))
+  xx.append(x)
+  if i >= AB.shape[1]/2:
+    s.add(x >= 0)
+    s.add(x <= 1)
+
+for j in range(AB.shape[0]):
+  for i in range(AB.shape[1]):
+    if i == 0:
+      b = xx[i] * AB[j,i]
+    else:
+      b += xx[i] * AB[j,i]
+  s.add(b == 1)
+
+print s.check()
+print s.model()
+
+ret = [0]*AB.shape[1]
+m = s.model()
+for w in m:
+  ret[int(str(w).split("_")[1])] = m[w].as_long()
+
+print ret
+print np.dot(AB, ret)
+
+# best quality
+hf = AB.shape[1]/2
+sol = np.dot(AB, ret[0:hf] + [0]*hf)
+
+print_solution(sol)
+
+exit(0)
+
+
 
 # part 2
 lll = run_lll(AB, fn='matmat.sage')
@@ -291,36 +334,6 @@ print_solution(rsol)
 
 
 exit(0)
-
-
-"""
-print "It's Z3 time"
-from z3 import *
-
-s = Solver()
-xx = []
-ms = 4
-for i in range(lm.shape[0]):
-  #x = Int('x_'+str(i))
-  x = BitVec('x_'+str(i), ms)
-  xx.append(x)
-
-for j in range(lm.shape[1]):
-  for i in range(lm.shape[0]):
-    if i == 0:
-      b = xx[i] * lm[j,i]
-    else:
-      b += xx[i] * lm[j,i]
-  s.add(b & ((1<<ms)-2) == 0)
-  if j == 0:
-    bsum = b
-  else:
-    bsum += b
-
-s.add(bsum != 0)
-print s.check()
-print s.model()
-"""
 
 
 """
