@@ -27,13 +27,13 @@ primes = filter(gmpy.is_prime, range(10000))
 
 # (60, 14) takes ??? seconds
 # reduce to (60, 27)
-P = primes[20:120]
-N = reduce(lambda x,y: x*y, primes[0:20])
+#P = primes[20:120]
+#N = reduce(lambda x,y: x*y, primes[0:20])
 
 # (40, 9) takes 11 seconds, 2 seconds with hacks
 # reduce to (40, 15)
 P = primes[20:60]
-N = reduce(lambda x,y: x*y, primes[0:10])
+N = reduce(lambda x,y: x*y, primes[0:9])
 
 # swag
 #P = primes[20:30]
@@ -41,8 +41,8 @@ N = reduce(lambda x,y: x*y, primes[0:10])
 
 # fast demo
 # (15, 4) takes 0.02 seconds
-P = primes[20:60]
-N = reduce(lambda x,y: x*y, primes[0:9])
+#P = primes[20:60]
+#N = reduce(lambda x,y: x*y, primes[0:9])
 
 # really fast demo, (10,4)
 #P = primes[20:300]
@@ -260,12 +260,15 @@ print AB.shape
 def runlp(AB):
   f = open("ext/tmp.lp", "w")
   f.write("minimize\n")
-
-  # no trivial solution
   s = []
   for i in range(AB.shape[1]/2, AB.shape[1]):
     s.append("x" + str(i+1))
-  f.write(' + '.join(s)+"\n")
+  f.write(' + '.join(s) + "\n")
+
+  #f.write("x1\n")
+  #f.write(' + '.join(s)+" < " + str(AB.shape[1]/2 - 1) + "\n")
+
+  # no trivial solution
 
   f.write("subject to\n")
 
@@ -297,7 +300,7 @@ def runlp(AB):
   f.write("end\n")
   f.close()
 
-  os.system("glpsol --cpxlp ext/tmp.lp --output ext/tmp.out")
+  os.system("glpsol --dual --cpxlp ext/tmp.lp --output ext/tmp.out")
 
   dat = open("ext/tmp.out").read().split("Column name")[1].split("\n")[2:2+AB.shape[1]]
 
