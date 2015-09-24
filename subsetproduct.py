@@ -32,8 +32,8 @@ N = reduce(lambda x,y: x*y, primes[0:20])
 
 # (40, 9) takes 11 seconds, 2 seconds with hacks
 # reduce to (40, 15)
-#P = primes[20:35]
-#N = reduce(lambda x,y: x*y, primes[0:6])
+P = primes[20:60]
+N = reduce(lambda x,y: x*y, primes[0:10])
 
 # swag
 #P = primes[20:30]
@@ -41,8 +41,8 @@ N = reduce(lambda x,y: x*y, primes[0:20])
 
 # fast demo
 # (15, 4) takes 0.02 seconds
-P = primes[20:45]
-N = reduce(lambda x,y: x*y, primes[0:8])
+P = primes[20:60]
+N = reduce(lambda x,y: x*y, primes[0:9])
 
 # really fast demo, (10,4)
 #P = primes[20:300]
@@ -259,10 +259,17 @@ print AB.shape
 
 def runlp(AB):
   f = open("ext/tmp.lp", "w")
-  f.write("maximize\n")
-  f.write("x1\n")
+  f.write("minimize\n")
+
+  # no trivial solution
+  s = []
+  for i in range(AB.shape[1]/2, AB.shape[1]):
+    s.append("x" + str(i+1))
+  f.write(' + '.join(s)+"\n")
+
   f.write("subject to\n")
 
+  # main linear constraints
   for row in range(AB.shape[0]):
     s = []
     for i in range(AB.shape[1]):
@@ -276,6 +283,9 @@ def runlp(AB):
     f.write(' + '.join(s).replace("+ -", "- ")+" = 1\n")
 
   f.write("bounds\n")
+  for i in range(AB.shape[1]/2):
+    f.write("x"+str(i+1)+" free\n")
+    pass
   for i in range(AB.shape[1]/2, AB.shape[1]):
     f.write("x"+str(i+1)+">0\n")
     f.write("x"+str(i+1)+"<1\n")
