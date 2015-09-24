@@ -32,12 +32,12 @@ primes = filter(gmpy.is_prime, range(10000))
 
 # (40, 9) takes 11 seconds, 2 seconds with hacks
 # reduce to (40, 15)
-P = primes[20:42]
-N = reduce(lambda x,y: x*y, primes[0:8])
+P = primes[20:35]
+N = reduce(lambda x,y: x*y, primes[0:6])
 
 # swag
-P = primes[20:30]
-N = reduce(lambda x,y: x*y, primes[0:4])
+#P = primes[20:30]
+#N = reduce(lambda x,y: x*y, primes[0:4])
 
 # fast demo
 # (15, 4) takes 0.02 seconds
@@ -270,17 +270,20 @@ for i in range(AB.shape[1]):
   if i >= AB.shape[1]/2:
     s.add(x >= 0)
     s.add(x <= 1)
+    pass
 
 for j in range(AB.shape[0]):
+  b = None
   for i in range(AB.shape[1]):
-    if i == 0:
-      b = xx[i] * AB[j,i]
-    else:
-      b += xx[i] * AB[j,i]
+    if AB[j,i] != 0:
+      if b == None:
+        b = xx[i] * AB[j,i]
+      else:
+        b += xx[i] * AB[j,i]
   s.add(b == 1)
 
 print s.check()
-print s.model()
+#print s.model()
 
 ret = [0]*AB.shape[1]
 m = s.model()
