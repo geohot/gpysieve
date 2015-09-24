@@ -253,6 +253,52 @@ lm = lllmat[good_rows, 0:pmat.shape[0]]
 print "hamming weights", abs(lm).sum(axis=1)
 print lm
 
+
+"""
+def runlpalt(AB):
+  f = open("ext/tmp.lp", "w")
+  f.write("minimize\n")
+  f.write("x1\n")
+
+  f.write("subject to\n")
+
+  # no trivial solution
+  s = []
+  for i in range(0, AB.shape[1]):
+    s.append("x" + str(i+1))
+  f.write(' + '.join(s) + "> 1\n")
+
+  # main linear constraints
+  for row in range(AB.shape[0]):
+    s = []
+    for i in range(AB.shape[1]):
+      if AB[row,i] != 0:
+        if AB[row,i] == 1:
+          s.append("x" + str(i+1))
+        elif AB[row,i] == -1:
+          s.append("-x" + str(i+1))
+        else:
+          s.append(str(AB[row,i]) + "x" + str(i+1))
+    f.write(' + '.join(s).replace("+ -", "- ")+" < 1\n")
+    f.write(' + '.join(s).replace("+ -", "- ")+" > 0\n")
+
+  f.write("bounds\n")
+  for i in range(AB.shape[1]):
+    f.write("x"+str(i+1)+" free\n")
+
+  f.write("integer\n")
+  for i in range(AB.shape[1]):
+    f.write("x"+str(i+1)+"\n")
+
+  f.write("end\n")
+  f.close()
+
+  os.system("glpsol --dual --cpxlp ext/tmp.lp --output ext/tmp.out")
+
+runlpalt(lm.T)
+exit(0)
+"""
+
 AB = np.hstack((lm.T, np.identity(lm.shape[0], dtype=np.int)*1))
 print AB
 print AB.shape
