@@ -33,7 +33,7 @@ primes = filter(gmpy.is_prime, range(10000))
 # (40, 9) takes 11 seconds, 2 seconds with hacks
 # reduce to (40, 15)
 P = primes[20:60]
-N = reduce(lambda x,y: x*y, primes[0:9])
+N = reduce(lambda x,y: x*y, primes[0:10])
 
 # swag
 #P = primes[20:30]
@@ -161,6 +161,7 @@ print re
 #exit(0)
 
 # crappy optimization is crappy
+"""
 import itertools
 fpmat = []
 ree = []
@@ -200,6 +201,7 @@ re = map(lambda x: x[0], order)
 print pmat.shape
 print pmat
 print re
+"""
 
 # ITS LLL O'CLOCK
 
@@ -300,8 +302,8 @@ exit(0)
 """
 
 AB = np.hstack((lm.T, np.identity(lm.shape[0], dtype=np.int)*1))
-print AB
-print AB.shape
+#print AB
+#print AB.shape
 
 def runlp(AB):
   f = open("ext/tmp.lp", "w")
