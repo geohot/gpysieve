@@ -27,7 +27,7 @@ primes = filter(gmpy.is_prime, range(10000))
 
 # (60, 14) takes ??? seconds
 # reduce to (60, 27)
-P = primes[20:200]
+P = primes[20:60]
 N = reduce(lambda x,y: x*y, primes[0:10])
 
 # (40, 9) takes 11 seconds, 2 seconds with hacks
@@ -36,8 +36,8 @@ N = reduce(lambda x,y: x*y, primes[0:10])
 #N = reduce(lambda x,y: x*y, primes[0:9])
 
 # swag
-#P = primes[20:47]
-#N = reduce(lambda x,y: x*y, primes[0:9])
+P = primes[20:30]
+N = reduce(lambda x,y: x*y, primes[0:4])
 
 # fast demo
 # (15, 4) takes 0.02 seconds
@@ -251,7 +251,67 @@ good_rows = filter(lambda i: all(lllmat[i, pmat.shape[0]:] == 0), range(lllmat.s
 lm = lllmat[good_rows, 0:pmat.shape[0]]
 
 print "hamming weights", abs(lm).sum(axis=1)
-#print lm
+print lm
+
+AB = np.hstack((lm.T, np.identity(lm.shape[0], dtype=np.int), np.asarray([1]*lm.shape[0]).reshape((-1, 1))))
+print AB
+print AB.shape
+
+# LOL
+import requests
+data = {}
+data['rows'] = str(AB.shape[0])
+data['cols'] = str(AB.shape[1]-1)
+data['matrix'] = " ".join(str(AB).replace("[", "").replace("]", "").replace("\n", " ").split(" "))
+data['SUBMIT'] = 'GO'
+print "wtf this shit uses import requests"
+r = requests.post("http://www.numbertheory.org/php/axb.php", data=data)
+soll = map(int, r.text.split("Y = (")[1].split(")")[0].split(','))
+print soll
+
+mul = soll[0:AB.shape[0]]
+print mul
+
+# final solution
+rsol = np.dot(lm.T, mul)
+print rsol
+
+print_solution(rsol)
+
+#open("ext/out.html", "w").write(r.text)
+
+exit(0)
+
+
+"""
+print "It's Z3 time"
+from z3 import *
+
+s = Solver()
+xx = []
+ms = 4
+for i in range(lm.shape[0]):
+  #x = Int('x_'+str(i))
+  x = BitVec('x_'+str(i), ms)
+  xx.append(x)
+
+for j in range(lm.shape[1]):
+  for i in range(lm.shape[0]):
+    if i == 0:
+      b = xx[i] * lm[j,i]
+    else:
+      b += xx[i] * lm[j,i]
+  s.add(b & ((1<<ms)-2) == 0)
+  if j == 0:
+    bsum = b
+  else:
+    bsum += b
+
+s.add(bsum != 0)
+print s.check()
+print s.model()
+"""
+
 
 """
 lm[lm <= -1] *= 113
@@ -276,6 +336,7 @@ for row in lllmat:
   # row of zeros is useless
   sol = row[0:pmat.shape[0]]
 
+  print sol
   if all(sol == 0):
     continue
 
