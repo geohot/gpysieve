@@ -306,17 +306,20 @@ print AB.shape
 def runlp(AB):
   f = open("ext/tmp.lp", "w")
   f.write("minimize\n")
+
+  #f.write(' + '.join(s) + "\n")
+  #f.write("x"+str(AB.shape[1]/2)+"\n")
+
+  # useless thing to minimize
+  f.write("x0\n")
+
+  f.write("subject to\n")
+
+  # no trivial solution
   s = []
   for i in range(AB.shape[1]/2, AB.shape[1]):
     s.append("x" + str(i+1))
-  f.write(' + '.join(s) + "\n")
-
-  #f.write("x1\n")
-  #f.write(' + '.join(s)+" < " + str(AB.shape[1]/2 - 1) + "\n")
-
-  # no trivial solution
-
-  f.write("subject to\n")
+  f.write(' + '.join(s)+" < " + str(AB.shape[1]/2 - 1) + "\n")
 
   # main linear constraints
   for row in range(AB.shape[0]):
@@ -332,6 +335,7 @@ def runlp(AB):
     f.write(' + '.join(s).replace("+ -", "- ")+" = 1\n")
 
   f.write("bounds\n")
+  f.write("x0 = 0\n")
   for i in range(AB.shape[1]/2):
     f.write("x"+str(i+1)+" free\n")
     pass
@@ -348,13 +352,17 @@ def runlp(AB):
 
   os.system("glpsol --dual --cpxlp ext/tmp.lp --output ext/tmp.out")
 
-  dat = open("ext/tmp.out").read().split("Column name")[1].split("\n")[2:2+AB.shape[1]]
+  dat = open("ext/tmp.out").read().split("Column name")[1].split("\n\n")[0].split("\n")[2:]
 
   sol = [0]*AB.shape[1]
 
   for c in dat:
     tmp = c.split()
-    sol[int(tmp[1][1:])-1] = int(tmp[3])
+    #print tmp
+    idx = int(tmp[1][1:])
+    val = int(tmp[3])
+    if idx != 0:
+      sol[idx-1] = val
 
   return sol
 
