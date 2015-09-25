@@ -32,8 +32,7 @@ primes = filter(gmpy.is_prime, range(10000))
 
 # (40, 9) takes 11 seconds, 2 seconds with hacks
 # reduce to (40, 15)
-P = primes[20:60]
-N = reduce(lambda x,y: x*y, primes[0:10])
+
 
 # swag
 #P = primes[20:30]
@@ -56,6 +55,36 @@ N = reduce(lambda x,y: x*y, primes[0:10])
 #ms = 6
 #ms = 6
 
+
+# QUALITY PROBLEMS
+
+#P = primes[20:180]
+#N = reduce(lambda x,y: x*y, primes[0:20])
+
+# solves hella fast with 11
+#P = primes[20:100]
+#N = reduce(lambda x,y: x*y, primes[0:13])
+
+# BIGGEST SOLVE TO DATE
+# gurobi solved this
+#P = primes[20:70]
+#N = reduce(lambda x,y: x*y, primes[0:12])
+
+# gurobi solves pretty fast, 10 seconds
+P = primes[20:56]
+N = reduce(lambda x,y: x*y, primes[0:11])
+
+# instasolve
+#P = primes[20:47]
+#N = reduce(lambda x,y: x*y, primes[0:9])
+
+#P = primes[20:40]
+#N = reduce(lambda x,y: x*y, primes[0:5])
+
+# testing
+#P = primes[20:54]
+#N = reduce(lambda x,y: x*y, primes[0:11])
+
 #print P
 print "2^%d" % len(P)
 print "finding", N
@@ -73,6 +102,7 @@ print "will find",len(P)-odds
 
 if len(P)-odds < 1.0:
   exit(-1)
+  pass
 
 """
 # brute force
@@ -252,58 +282,55 @@ np.set_printoptions(linewidth=np.inf)
 good_rows = filter(lambda i: all(lllmat[i, pmat.shape[0]:] == 0), range(lllmat.shape[0]))
 lm = lllmat[good_rows, 0:pmat.shape[0]]
 
-print "hamming weights", abs(lm).sum(axis=1)
-print lm
-
+print "hamming weights", np.mean(abs(lm).sum(axis=1)), abs(lm).sum(axis=1), abs(lm).sum()
+#print lm
 
 """
-def runlpalt(AB):
-  f = open("ext/tmp.lp", "w")
-  f.write("minimize\n")
-  f.write("x1\n")
+def gj(a):
+  ova = 0
 
-  f.write("subject to\n")
+  for pivot in range(a.shape[1]):
+    found = None
 
-  # no trivial solution
-  s = []
-  for i in range(0, AB.shape[1]):
-    s.append("x" + str(i+1))
-  f.write(' + '.join(s) + "> 1\n")
-
-  # main linear constraints
-  for row in range(AB.shape[0]):
-    s = []
-    for i in range(AB.shape[1]):
-      if AB[row,i] != 0:
-        if AB[row,i] == 1:
-          s.append("x" + str(i+1))
-        elif AB[row,i] == -1:
-          s.append("-x" + str(i+1))
+    for i in range(ova, a.shape[0]):
+      # found a nonzero pivot row
+      if a[i, pivot] != 0:
+        if found is None:
+          # found it, switch it with the top row
+          if i != ova:
+            a[[ova, i],:] = a[[i, ova],:]
+          found = ova
+          ova = ova + 1
         else:
-          s.append(str(AB[row,i]) + "x" + str(i+1))
-    f.write(' + '.join(s).replace("+ -", "- ")+" < 1\n")
-    f.write(' + '.join(s).replace("+ -", "- ")+" > 0\n")
+          a[i] -= (a[i][pivot]/a[found][pivot]) * a[found]
+          #a[i] += a[found]
 
-  f.write("bounds\n")
-  for i in range(AB.shape[1]):
-    f.write("x"+str(i+1)+" free\n")
+          #a[i] -= a[found]
 
-  f.write("integer\n")
-  for i in range(AB.shape[1]):
-    f.write("x"+str(i+1)+"\n")
+  return a
 
-  f.write("end\n")
-  f.close()
 
-  os.system("glpsol --dual --cpxlp ext/tmp.lp --output ext/tmp.out")
+print gj(lm)
 
-runlpalt(lm.T)
 exit(0)
 """
 
 AB = np.hstack((lm.T, np.identity(lm.shape[0], dtype=np.int)*1))
 #print AB
 #print AB.shape
+"""
+exit(0)
+
+# part 2
+lll = run_lll(AB, fn='matmat.sage')
+print lll
+
+#print lll[(lll.shape[0]/2):, (lll.shape[0]/2):]
+exit(0)
+
+AB = np.hstack((lll.T, np.identity(lm.shape[0], dtype=np.int)*1))
+"""
+
 
 def runlp(AB):
   f = open("ext/tmp.lp", "w")
@@ -333,7 +360,7 @@ def runlp(AB):
         elif AB[row,i] == -1:
           s.append("-x" + str(i+1))
         else:
-          s.append(str(AB[row,i]) + "x" + str(i+1))
+          s.append(str(AB[row,i]) + " x" + str(i+1))
     f.write(' + '.join(s).replace("+ -", "- ")+" = 1\n")
 
   f.write("bounds\n")
@@ -342,29 +369,36 @@ def runlp(AB):
     f.write("x"+str(i+1)+" free\n")
     pass
   for i in range(AB.shape[1]/2, AB.shape[1]):
-    f.write("x"+str(i+1)+">0\n")
-    f.write("x"+str(i+1)+"<1\n")
+    f.write("x"+str(i+1)+" > 0\n")
+    f.write("x"+str(i+1)+" < 1\n")
 
-  f.write("integer\n")
+  f.write("integers\n")
   for i in range(AB.shape[1]):
     f.write("x"+str(i+1)+"\n")
 
   f.write("end\n")
   f.close()
 
-  os.system("glpsol --dual --cpxlp ext/tmp.lp --output ext/tmp.out")
-
-  dat = open("ext/tmp.out").read().split("Column name")[1].split("\n\n")[0].split("\n")[2:]
-
   sol = [0]*AB.shape[1]
 
-  for c in dat:
-    tmp = c.split()
-    #print tmp
-    idx = int(tmp[1][1:])
-    val = int(tmp[3])
-    if idx != 0:
-      sol[idx-1] = val
+  if False:
+    os.system("glpsol --dual --cpxlp ext/tmp.lp --output ext/tmp.out")
+    dat = open("ext/tmp.out").read().split("Column name")[1].split("\n\n")[0].split("\n")[2:]
+
+    for c in dat:
+      tmp = c.split()
+      #print tmp
+      idx = int(tmp[1][1:])
+      val = int(tmp[3])
+      if idx != 0:
+        sol[idx-1] = val
+  else:
+    os.system("gurobi_cl MIPFocus=1 ResultFile=ext/tmp.sol ext/tmp.lp")
+    dat = open("ext/tmp.sol").read().split("\n")[1:-1]
+    for c in dat:
+      vn, val = c.split()
+      if vn[0] == 'x':
+        sol[int(vn[1:])-1] = int(val)
 
   return sol
 
@@ -427,10 +461,6 @@ exit(0)
 """
 
 
-# part 2
-lll = run_lll(AB, fn='matmat.sage')
-print lll[(lll.shape[0]/2):, (lll.shape[0]/2):]
-exit(0)
 
 
 # LOL
@@ -763,4 +793,49 @@ print ret
 print np.dot(ret, pmat), re, np.dot(ret, pmat) % np.asarray(re)
 
 print_solution(ret)
+
+"""
+def runlpalt(AB):
+  f = open("ext/tmp.lp", "w")
+  f.write("minimize\n")
+  f.write("x1\n")
+
+  f.write("subject to\n")
+
+  # no trivial solution
+  s = []
+  for i in range(0, AB.shape[1]):
+    s.append("x" + str(i+1))
+  f.write(' + '.join(s) + "> 1\n")
+
+  # main linear constraints
+  for row in range(AB.shape[0]):
+    s = []
+    for i in range(AB.shape[1]):
+      if AB[row,i] != 0:
+        if AB[row,i] == 1:
+          s.append("x" + str(i+1))
+        elif AB[row,i] == -1:
+          s.append("-x" + str(i+1))
+        else:
+          s.append(str(AB[row,i]) + "x" + str(i+1))
+    f.write(' + '.join(s).replace("+ -", "- ")+" < 1\n")
+    f.write(' + '.join(s).replace("+ -", "- ")+" > 0\n")
+
+  f.write("bounds\n")
+  for i in range(AB.shape[1]):
+    f.write("x"+str(i+1)+" free\n")
+
+  f.write("integer\n")
+  for i in range(AB.shape[1]):
+    f.write("x"+str(i+1)+"\n")
+
+  f.write("end\n")
+  f.close()
+
+  os.system("glpsol --cpxlp ext/tmp.lp --output ext/tmp.out")
+
+runlpalt(lm.T)
+exit(0)
+"""
 

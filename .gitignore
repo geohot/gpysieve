@@ -3,3 +3,4 @@
 ext
 tmp
 *.sage.py
+gurobi.log
