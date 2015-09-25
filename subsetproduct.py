@@ -62,8 +62,8 @@ primes = filter(gmpy.is_prime, range(10000))
 #N = reduce(lambda x,y: x*y, primes[0:20])
 
 # solves hella fast with 11
-#P = primes[20:100]
-#N = reduce(lambda x,y: x*y, primes[0:13])
+#P = primes[20:200]
+#N = reduce(lambda x,y: x*y, primes[0:15])
 
 # BIGGEST SOLVE TO DATE
 # gurobi solved this
@@ -71,15 +71,15 @@ primes = filter(gmpy.is_prime, range(10000))
 #N = reduce(lambda x,y: x*y, primes[0:12])
 
 # gurobi solves pretty fast, 10 seconds
-P = primes[20:56]
-N = reduce(lambda x,y: x*y, primes[0:11])
+#P = primes[20:56]
+#N = reduce(lambda x,y: x*y, primes[0:11])
 
 # instasolve
 #P = primes[20:47]
 #N = reduce(lambda x,y: x*y, primes[0:9])
 
-#P = primes[20:40]
-#N = reduce(lambda x,y: x*y, primes[0:5])
+P = primes[20:90]
+N = reduce(lambda x,y: x*y, primes[0:4])
 
 # testing
 #P = primes[20:54]
@@ -234,10 +234,12 @@ print re
 """
 
 # ITS LLL O'CLOCK
+NNN = 113
+NNNN = 16
 
 
 # build LLL matrix
-lllme = np.hstack((np.identity(pmat.shape[0], dtype=np.int), pmat))
+lllme = np.hstack((np.identity(pmat.shape[0], dtype=np.int)*NNNN, pmat))
 modme = np.identity(pmat.shape[1], dtype=np.int)
 for i in range(len(re)):
   modme[i][i] = re[i]
@@ -245,9 +247,13 @@ botme = np.hstack((np.zeros(pmat.shape).T.astype(np.int), modme))
 lllme = np.vstack((lllme, botme))
 
 # HACKS TO BE BIG
-NNN = 19
 for i in range(pmat.shape[0], lllme.shape[0]):
   lllme[:, i] *= NNN
+
+# add row of zeros
+lllme = np.hstack((lllme, np.asarray([0]*(pmat.shape[0] + len(re))).reshape(-1, 1)))
+botrow = np.asarray([1]*pmat.shape[0] + [0]*len(re) + [1]).reshape(1, -1)
+lllme = np.vstack((lllme, botrow))
 
 def run_lll(lllme, fn='LLL.sage'):
   print "calling sage", lllme.shape
@@ -272,18 +278,45 @@ lllmat = run_lll(lllme)
 # print good
 np.set_printoptions(threshold='nan')
 np.set_printoptions(linewidth=np.inf)
+
 # hacks
-#print lllme
-#print "LLL"
-#print lllmat
+"""
+print lllme
+print "LLL"
+print lllmat
+"""
 
 
 # find a all 1 vector from these
 good_rows = filter(lambda i: all(lllmat[i, pmat.shape[0]:] == 0), range(lllmat.shape[0]))
-lm = lllmat[good_rows, 0:pmat.shape[0]]
+lm = lllmat[good_rows, 0:pmat.shape[0]]/NNNN
 
+print lm.shape
 print "hamming weights", np.mean(abs(lm).sum(axis=1)), abs(lm).sum(axis=1), abs(lm).sum()
 #print lm
+
+#exit(0)
+
+
+"""
+for i in good_rows:
+  tr = lllmat[i, 0:pmat.shape[0]]
+  print tr
+
+  # null solution is bad
+  if all(tr == 0):
+    continue
+
+  sol = tr/2
+
+  # mixed 1 and -1 is useless
+  if any(sol == 1) and any(sol == -1):
+    continue
+
+  print_solution(sol)
+
+exit(0)
+"""
 
 """
 def gj(a):
@@ -315,7 +348,7 @@ print gj(lm)
 exit(0)
 """
 
-AB = np.hstack((lm.T, np.identity(lm.shape[0], dtype=np.int)*1))
+AB = np.hstack((lm.T, np.identity(lm.shape[1], dtype=np.int)*1))
 #print AB
 #print AB.shape
 """
@@ -339,6 +372,9 @@ def runlp(AB):
   #f.write(' + '.join(s) + "\n")
   #f.write("x"+str(AB.shape[1]/2)+"\n")
 
+  #print AB
+  #print AB.shape
+
   # useless thing to minimize
   f.write("x0\n")
 
@@ -346,7 +382,7 @@ def runlp(AB):
 
   # no trivial solution
   s = []
-  for i in range(AB.shape[1]/2, AB.shape[1]):
+  for i in range(AB.shape[1]-AB.shape[0], AB.shape[1]):
     s.append("x" + str(i+1))
   f.write(' + '.join(s)+" < " + str(AB.shape[1]/2 - 1) + "\n")
 
@@ -365,10 +401,10 @@ def runlp(AB):
 
   f.write("bounds\n")
   f.write("x0 = 0\n")
-  for i in range(AB.shape[1]/2):
+  for i in range(AB.shape[1]-AB.shape[0]):
     f.write("x"+str(i+1)+" free\n")
     pass
-  for i in range(AB.shape[1]/2, AB.shape[1]):
+  for i in range(AB.shape[1]-AB.shape[0], AB.shape[1]):
     f.write("x"+str(i+1)+" > 0\n")
     f.write("x"+str(i+1)+" < 1\n")
 
@@ -406,8 +442,8 @@ sol = runlp(AB)
 print sol
 print np.dot(AB, sol)
 
-hf = AB.shape[1]/2
-sol = np.dot(AB, sol[0:hf] + [0]*hf)
+hf = lm.shape[0]
+sol = np.dot(AB, sol[0:hf] + [0]*lm.shape[1])
 print_solution(sol)
 
 
