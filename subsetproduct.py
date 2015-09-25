@@ -6,6 +6,10 @@ import os
 import subprocess
 from sieve import gjee
 
+def tm(a):
+  a = str(a)
+  return a.replace("[", "(").replace("]", ")").replace(", ", "*")
+
 def print_solution(ret):
   # print solution
   out = []
@@ -15,6 +19,7 @@ def print_solution(ret):
       out.append(x)
       prod *= x
   print N, prod, prod%N, out
+  print tm(out),"%",tm(factor(N)[0]),"==",prod%N
 
 primes = filter(gmpy.is_prime, range(10000))
 
@@ -62,8 +67,8 @@ primes = filter(gmpy.is_prime, range(10000))
 #N = reduce(lambda x,y: x*y, primes[0:20])
 
 # solves hella fast with 11
-#P = primes[20:200]
-#N = reduce(lambda x,y: x*y, primes[0:15])
+#P = primes[20:70]
+#N = reduce(lambda x,y: x*y, primes[0:12])
 
 # BIGGEST SOLVE TO DATE
 # gurobi solved this
@@ -71,6 +76,7 @@ primes = filter(gmpy.is_prime, range(10000))
 #N = reduce(lambda x,y: x*y, primes[0:12])
 
 # gurobi solves pretty fast, 10 seconds
+# (79*101*103*107*109*127*131*149*151*157*223*227*233*239*263) % (2*3*5*7*11*13*17*19*23*29*31) == 1
 #P = primes[20:56]
 #N = reduce(lambda x,y: x*y, primes[0:11])
 
@@ -78,12 +84,12 @@ primes = filter(gmpy.is_prime, range(10000))
 #P = primes[20:47]
 #N = reduce(lambda x,y: x*y, primes[0:9])
 
-P = primes[20:90]
-N = reduce(lambda x,y: x*y, primes[0:4])
+#P = primes[20:90]
+#N = reduce(lambda x,y: x*y, primes[0:4])
 
 # testing
-#P = primes[20:54]
-#N = reduce(lambda x,y: x*y, primes[0:11])
+P = primes[20:56]
+N = reduce(lambda x,y: x*y, primes[0:11])
 
 #print P
 print "2^%d" % len(P)
@@ -235,8 +241,9 @@ print re
 
 # ITS LLL O'CLOCK
 NNN = 113
-NNNN = 16
 
+# making this bigger decreases the hamming weight of the vectors, but also decreases the number of vectors to work with
+NNNN = 1
 
 # build LLL matrix
 lllme = np.hstack((np.identity(pmat.shape[0], dtype=np.int)*NNNN, pmat))
@@ -251,9 +258,10 @@ for i in range(pmat.shape[0], lllme.shape[0]):
   lllme[:, i] *= NNN
 
 # add row of zeros
-lllme = np.hstack((lllme, np.asarray([0]*(pmat.shape[0] + len(re))).reshape(-1, 1)))
-botrow = np.asarray([1]*pmat.shape[0] + [0]*len(re) + [1]).reshape(1, -1)
-lllme = np.vstack((lllme, botrow))
+if NNNN > 1:
+  lllme = np.hstack((lllme, np.asarray([0]*(pmat.shape[0] + len(re))).reshape(-1, 1)))
+  botrow = np.asarray([1]*pmat.shape[0] + [0]*len(re) + [1]).reshape(1, -1)
+  lllme = np.vstack((lllme, botrow))
 
 def run_lll(lllme, fn='LLL.sage'):
   print "calling sage", lllme.shape
@@ -285,6 +293,24 @@ print lllme
 print "LLL"
 print lllmat
 """
+
+if NNNN == 2:
+  for r in range(lllmat.shape[0]):
+    r = lllmat[r]
+    if all(abs(r) <= 1):
+      print r
+      sol = (r[0:pmat.shape[0]]-r[-1])/2
+      print_solution(sol)
+
+
+"""
+print lllmat[14,:]
+sol = abs(lllmat[14,0:-9]-1)/2
+print_solution(sol)
+"""
+
+#exit(0)
+
 
 
 # find a all 1 vector from these
@@ -384,7 +410,7 @@ def runlp(AB):
   s = []
   for i in range(AB.shape[1]-AB.shape[0], AB.shape[1]):
     s.append("x" + str(i+1))
-  f.write(' + '.join(s)+" < " + str(AB.shape[1]/2 - 1) + "\n")
+  f.write(' + '.join(s)+" < " + str(AB.shape[1]-AB.shape[0] - 1) + "\n")
 
   # main linear constraints
   for row in range(AB.shape[0]):
