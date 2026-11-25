@@ -1,0 +1,1 @@
+2767 primes, exact orders, exact Lucas ranks and signatures confirmed with PARI/GP

@@ -1,0 +1,49 @@
+{
+  "D": 5,
+  "order_bound": 50000,
+  "source_sha256": "c83aa8ceb173447103132ea4b9f8a662dcbd2be708520ff5f3620520491a81cd",
+  "input_groups": 28819,
+  "before_subsets": 53247937399291083824726505726368,
+  "factors": 12165,
+  "with_rank_bounds": 12164,
+  "exact_ranks": 6399,
+  "counts": {
+    "rank_class_subsets_upper": 1117006803976,
+    "largest_rank_class": 40,
+    "anchors": 33719,
+    "anchor_cube_subsets": 847521471652,
+    "half_entries": 32418096,
+    "anchor_matches": 2119,
+    "recursive_splits": 149,
+    "canonical_matches": 1,
+    "all_divisors_pass": 1
+  },
+  "lower_bound_survivors": [
+    {
+      "D": 5,
+      "m": 13013,
+      "factors": [
+        3340762283952395329506327023033,
+        20200567342579527631370455849751729349809657695513,
+        5782172113400990737
+      ],
+      "orders": [
+        169,
+        1001,
+        143
+      ],
+      "lower": [
+        3,
+        1,
+        1
+      ],
+      "upper": [
+        1670381141976197664753163511517,
+        10100283671289763815685227924875864674904828847757,
+        2891086056700495369
+      ],
+      "bits": 328
+    }
+  ],
+  "hits": []
+}

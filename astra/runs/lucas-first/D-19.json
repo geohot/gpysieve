@@ -1,0 +1,18 @@
+{
+  "D": -19,
+  "source_sha256": "c83aa8ceb173447103132ea4b9f8a662dcbd2be708520ff5f3620520491a81cd",
+  "input_groups": 4181,
+  "before_subsets": 7456413972495536,
+  "factors": 10120,
+  "with_rank_bounds": 10113,
+  "exact_ranks": 5483,
+  "counts": {
+    "rank_class_subsets_upper": 13378912,
+    "largest_rank_class": 23,
+    "anchors": 915,
+    "anchor_cube_subsets": 13357096,
+    "half_entries": 49420,
+    "anchor_matches": 26
+  },
+  "hits": []
+}

@@ -1,0 +1,46 @@
+	Note to Newcomers to this Project
+
+	Here is a short description of the "Pages".  The sequence numbers in
+the left column count factorizations found since 1981.  Next come the label
+	       651
+(2,651+ means 2    + 1) and the size (c209 means 209 decimal digits) of the
+number which was factored.  Then come the new factor(s), the discoverer and
+the method used.  Recently, only the multiple polynomial quadratic sieve
+(ppmpqs), the elliptic curve method (ecm) and the number field sieve (nfs)
+have been used.  `hmpqs' stands for hypercube multiple polynomial quadratic
+sieve.  Under `new factors', `p90' means a 90-digit prime and `c201' is a
+201-digit composite number.  The LM notation is explained in the book.
+
+	From time to time I issue a list of `champions'.  These are the TWO
+greatest successes so far for each factorization method.  For methods whose
+time depends just on the size of the number factored, the measure is the size
+of that composite number.  For methods whose time depends on the size of the
+(prime) factor discovered, the measure is the size of that factor.  We use
+four categories to measure the success of nfs.  The first measure for the
+special nfs is simply the size of the number factored (and whose factors were
+unknown).  The second measure for snfs is "by snfs difficulty."  Simple snfs
+uses a polynomial p(X), constructed using the special form of the number N
+factored, and a zero m of p modulo N.  The "snfs difficulty" of N is the size
+of p(m), which is a multiple of N.  The general nfs would factor any number
+of given size in about the same time.  It ignores any special form the number
+might have.  Its performance is measured fairly by the size of the number
+factored.  The hybrid s/gnfs has features of both special and general nfs.
+Its performance is measured by the size of the number factored.  Every measure,
+except the first measure for snfs, tries to reflect the computational labor
+required by the factorization.  The first column gives the sequence number of
+the report of the factorization.  The list of champions usually also shows the
+first five holes (unfactored numbers) in each of the eighteen tables.
+
+	The `wanted' lists were prepared by J. L. Selfridge, and now I make
+these lists.  The numbers on the lists are the most desired (for psychological
+reasons) factorizations.  Often they are early holes (unfactored numbers) in
+their tables.  Sometimes their exponent has special form, like a power of 2 or
+a prime.
+
+Keep the factors coming!
+
+Sam Wagstaff
+Department of Computer Sciences
+Purdue University
+West Lafayette, IN 47907-1398
+email: ssw@cerias.purdue.edu

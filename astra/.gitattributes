@@ -1,0 +1,5 @@
+# Research inputs/outputs have recorded byte-level hashes; don't convert EOLs.
+runs/** -text
+# Preserve the original typography of the two downloaded source documents.
+runs/chen-greene/Baillie-PSW.html -whitespace
+runs/scale-next/cunningham/pmain1126.txt -whitespace

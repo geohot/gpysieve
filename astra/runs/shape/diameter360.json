@@ -1,0 +1,25 @@
+{
+  "diameter": 360,
+  "discriminants": [
+    5,
+    -7,
+    -11,
+    13,
+    -15,
+    17,
+    -19,
+    21
+  ],
+  "counts": {
+    "shape_discriminants": 128880,
+    "center_anchor": 128822,
+    "prime_translates": 3212,
+    "endpoint_anchor": 58
+  },
+  "distinct_fermat": 62,
+  "largest_factored_gcd_union_bits": 111,
+  "trace_sha256": "e7874719ac07a08b281df4147d2fa0b3ec36087e598093309a1a52f3434364ba",
+  "actual_D_and_MR": [],
+  "unresolved": [],
+  "hits": []
+}

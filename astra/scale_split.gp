@@ -1,0 +1,2 @@
+\\ Finite split-prime anchor list, exact gcd and certified factorization (or explicit hole).
+splitanchor(a,b,c,e,D)={my(T=2*abs(2*a*b-c*(a+b)+c^2),G=gcd(2^e-1,shapeU(T,(1-D)/4)),f,ks=List(),p);if(!e||!T||logint(G,2)>155,return([-1,[]]));f=factor(G);if(factorback(f)!=G,error("incomplete"));for(i=1,matsize(f)[1],p=f[i,1];if(!isprime(p),error("uncertified"));if((p+1)%(2*c)==0 && kronecker(D,p)==1,listput(ks,(p+1)/c)));return([logint(G,2)+1,Vec(ks)])};

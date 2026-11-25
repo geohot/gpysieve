@@ -1,0 +1,64 @@
+{
+  "16": {
+    "primes": 1495,
+    "odd_prime_power_levels": 192,
+    "smallest_support": 13,
+    "by_weight": {
+      "None": {
+        "union_bound": 0.0002187021088669597,
+        "expected_saved_odd_ambient_bits": 0.0006641253625113355
+      },
+      "3": {
+        "union_bound": 1.0,
+        "expected_saved_odd_ambient_bits": 1297.2769246405865
+      },
+      "5": {
+        "union_bound": 1.0,
+        "expected_saved_odd_ambient_bits": 1202.4780455108112
+      },
+      "31": {
+        "union_bound": 1.0,
+        "expected_saved_odd_ambient_bits": 514.203515114262
+      },
+      "101": {
+        "union_bound": 1.0,
+        "expected_saved_odd_ambient_bits": 74.81683532844366
+      },
+      "301": {
+        "union_bound": 0.2091808541863959,
+        "expected_saved_odd_ambient_bits": 0.8598382509521527
+      }
+    }
+  },
+  "four-lists": {
+    "primes": 2327,
+    "odd_prime_power_levels": 218,
+    "smallest_support": 17,
+    "by_weight": {
+      "None": {
+        "union_bound": 9.777529995034393e-06,
+        "expected_saved_odd_ambient_bits": 3.353031217529805e-05
+      },
+      "3": {
+        "union_bound": 1.0,
+        "expected_saved_odd_ambient_bits": 1534.6089522742843
+      },
+      "5": {
+        "union_bound": 1.0,
+        "expected_saved_odd_ambient_bits": 1430.6562010460125
+      },
+      "31": {
+        "union_bound": 1.0,
+        "expected_saved_odd_ambient_bits": 653.7776754057088
+      },
+      "101": {
+        "union_bound": 1.0,
+        "expected_saved_odd_ambient_bits": 114.06665012689656
+      },
+      "301": {
+        "union_bound": 0.42789580194472154,
+        "expected_saved_odd_ambient_bits": 2.1879215636057996
+      }
+    }
+  }
+}

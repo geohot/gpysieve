@@ -1,0 +1,24 @@
+{
+  "factors": 6,
+  "diameter": 26,
+  "discriminants": [
+    5,
+    -7,
+    -11,
+    13,
+    -15,
+    17,
+    -19,
+    21
+  ],
+  "counts": {
+    "patterns": 1287,
+    "forced_small_prime": 1173,
+    "sieved_shape_D": 912,
+    "prime_translates": 28
+  },
+  "unresolved": [],
+  "actual_D_and_MR": [],
+  "hits": [],
+  "trace_sha256": "4e7cd033bd5f35d2fa37cb36e08cd4ac9f4d4e4180028537117a6e93f48777fc"
+}

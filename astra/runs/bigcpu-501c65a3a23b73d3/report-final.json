@@ -1,0 +1,181 @@
+{
+  "iris-mixed-": {
+    "iris-mixed-260000": {
+      "jobs": 27671,
+      "subsets": 1345353903354369901,
+      "exact_checks": 113593464,
+      "full_pass": 0
+    },
+    "iris-mixed-360000": {
+      "jobs": 27085,
+      "subsets": 1311618231287970044,
+      "exact_checks": 108664676,
+      "full_pass": 0
+    },
+    "iris-mixed-460000": {
+      "jobs": 26629,
+      "subsets": 1300771673255505113,
+      "exact_checks": 106005649,
+      "full_pass": 0
+    },
+    "iris-mixed-560000": {
+      "jobs": 2701,
+      "subsets": 123467892238815638,
+      "exact_checks": 7666257,
+      "full_pass": 0
+    },
+    "iris-mixed-a": {
+      "jobs": 27717,
+      "subsets": 81779461277203704,
+      "exact_checks": 24807056,
+      "full_pass": 0
+    },
+    "iris-mixed-b": {
+      "jobs": 36056,
+      "subsets": 83952236639150439,
+      "exact_checks": 61486764,
+      "full_pass": 0
+    },
+    "iris-mixed-c": {
+      "jobs": 13544,
+      "subsets": 1153319260432709672,
+      "exact_checks": 73964778,
+      "full_pass": 0
+    }
+  },
+  "iris-native": {
+    "iris-native": {
+      "jobs": 72411,
+      "subsets": 672130194459520647,
+      "anchor_pass": 1468760246,
+      "two_pass": 37762,
+      "full_pass": 0
+    },
+    "iris-native-2000000": {
+      "jobs": 31222,
+      "subsets": 1550928529937136000,
+      "anchor_pass": 66097663,
+      "two_pass": 337,
+      "full_pass": 0
+    }
+  },
+  "iris-base2-": {
+    "iris-base2-1024": {
+      "jobs": 3315,
+      "constructed_mr": 77308,
+      "ordinary_lucas_pass": 0
+    },
+    "iris-base2-2048": {
+      "jobs": 6715,
+      "constructed_mr": 460479,
+      "ordinary_lucas_pass": 0
+    },
+    "iris-base2-512": {
+      "jobs": 1659,
+      "constructed_mr": 11901,
+      "ordinary_lucas_pass": 0
+    }
+  },
+  "iris-index-": {
+    "iris-index-128": {
+      "jobs": 3504,
+      "products": 19494,
+      "lucas_congruence_pass": 54,
+      "fermat_one_pass": 0
+    },
+    "iris-index-384b": {
+      "jobs": 14948,
+      "products": 606885,
+      "lucas_congruence_pass": 3316,
+      "fermat_one_pass": 23
+    },
+    "iris-index-768b": {
+      "jobs": 31474,
+      "products": 2723030,
+      "lucas_congruence_pass": 11352,
+      "fermat_one_pass": 61
+    }
+  },
+  "iris-refine-": {
+    "iris-refine-192": {
+      "jobs": 6457,
+      "products": 71120,
+      "lucas_congruence_pass": 281,
+      "fermat_one_pass": 5
+    },
+    "iris-refine-256": {
+      "jobs": 9599,
+      "products": 204561,
+      "lucas_congruence_pass": 954,
+      "fermat_one_pass": 8
+    }
+  },
+  "index_coverage": {
+    "iris-index-128": {
+      "incomplete_counts": {
+        "5": 0,
+        "-7": 0,
+        "-11": 0,
+        "13": 0,
+        "-15": 0,
+        "17": 0,
+        "-19": 0,
+        "21": 0
+      },
+      "completed_batches": 3504
+    },
+    "iris-index-384b": {
+      "incomplete_counts": {
+        "5": 24,
+        "-7": 0,
+        "-11": 48,
+        "13": 140,
+        "-15": 100,
+        "17": 164,
+        "-19": 139,
+        "21": 183
+      },
+      "completed_batches": 14948
+    },
+    "iris-index-768b": {
+      "incomplete_counts": {
+        "5": 352,
+        "-7": 210,
+        "-11": 395,
+        "13": 519,
+        "-15": 473,
+        "17": 547,
+        "-19": 521,
+        "21": 565
+      },
+      "completed_batches": 31474
+    },
+    "iris-refine-192": {
+      "incomplete_counts": {
+        "5": 0,
+        "-7": 0,
+        "-11": 0,
+        "13": 0,
+        "-15": 0,
+        "17": 0,
+        "-19": 0,
+        "21": 2
+      },
+      "completed_batches": 6457
+    },
+    "iris-refine-256": {
+      "incomplete_counts": {
+        "5": 0,
+        "-7": 0,
+        "-11": 0,
+        "13": 8,
+        "-15": 1,
+        "17": 12,
+        "-19": 2,
+        "21": 18
+      },
+      "completed_batches": 9599
+    }
+  },
+  "special_events": []
+}

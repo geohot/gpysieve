@@ -1,0 +1,322 @@
+{
+  "source_sha256": "c83aa8ceb173447103132ea4b9f8a662dcbd2be708520ff5f3620520491a81cd",
+  "dimension": 9,
+  "counts": {
+    "templates": 4181,
+    "raw_subset_visits": 7456413972495536,
+    "tail_patterns": 3326,
+    "tail_masks": 897202,
+    "tail_actual_products": 23141
+  },
+  "early": {
+    "5": {
+      "groups": 1043,
+      "rank_class_subsets_upper": 7633464,
+      "largest_rank_class": 22,
+      "anchors": 1468,
+      "anchor_cube_subsets": 7364256,
+      "half_entries": 65498,
+      "anchor_matches": 632
+    },
+    "-7": {
+      "groups": 921,
+      "rank_class_subsets_upper": 118784,
+      "largest_rank_class": 14,
+      "anchors": 1051,
+      "anchor_cube_subsets": 108148,
+      "half_entries": 15766,
+      "anchor_matches": 288
+    },
+    "-11": {
+      "groups": 789,
+      "rank_class_subsets_upper": 4089496,
+      "largest_rank_class": 20,
+      "anchors": 1399,
+      "anchor_cube_subsets": 3667124,
+      "half_entries": 60666,
+      "anchor_matches": 233
+    },
+    "13": {
+      "groups": 658,
+      "rank_class_subsets_upper": 42766528,
+      "largest_rank_class": 25,
+      "anchors": 1369,
+      "anchor_cube_subsets": 42730476,
+      "half_entries": 105352,
+      "anchor_matches": 142
+    },
+    "-15": {
+      "groups": 539,
+      "rank_class_subsets_upper": 4428528,
+      "largest_rank_class": 20,
+      "anchors": 1359,
+      "anchor_cube_subsets": 4331196,
+      "half_entries": 63572,
+      "anchor_matches": 58
+    },
+    "17": {
+      "groups": 498,
+      "rank_class_subsets_upper": 118666288,
+      "largest_rank_class": 26,
+      "anchors": 1781,
+      "anchor_cube_subsets": 116112248,
+      "half_entries": 210552,
+      "anchor_matches": 79
+    },
+    "-19": {
+      "groups": 402,
+      "rank_class_subsets_upper": 13363808,
+      "largest_rank_class": 23,
+      "anchors": 757,
+      "anchor_cube_subsets": 13354492,
+      "half_entries": 48222,
+      "anchor_matches": 20
+    },
+    "-23": {
+      "groups": 342,
+      "rank_class_subsets_upper": 295456,
+      "largest_rank_class": 16,
+      "anchors": 1031,
+      "anchor_cube_subsets": 288780,
+      "half_entries": 20046,
+      "anchor_matches": 15
+    },
+    "29": {
+      "groups": 288,
+      "rank_class_subsets_upper": 1900208,
+      "largest_rank_class": 20,
+      "anchors": 811,
+      "anchor_cube_subsets": 1887944,
+      "half_entries": 27088,
+      "anchor_matches": 5
+    },
+    "-31": {
+      "groups": 249,
+      "rank_class_subsets_upper": 523984,
+      "largest_rank_class": 18,
+      "anchors": 825,
+      "anchor_cube_subsets": 517772,
+      "half_entries": 19790,
+      "anchor_matches": 1
+    },
+    "37": {
+      "groups": 213,
+      "rank_class_subsets_upper": 19416760,
+      "largest_rank_class": 23,
+      "anchors": 1195,
+      "anchor_cube_subsets": 19342172,
+      "half_entries": 108010,
+      "anchor_matches": 3
+    },
+    "41": {
+      "groups": 180,
+      "rank_class_subsets_upper": 308656,
+      "largest_rank_class": 16,
+      "anchors": 684,
+      "anchor_cube_subsets": 300260,
+      "half_entries": 16408,
+      "anchor_matches": 2
+    },
+    "-43": {
+      "groups": 154,
+      "rank_class_subsets_upper": 343600,
+      "largest_rank_class": 17,
+      "anchors": 509,
+      "anchor_cube_subsets": 334528,
+      "half_entries": 13954
+    },
+    "-47": {
+      "groups": 129,
+      "rank_class_subsets_upper": 19292648,
+      "largest_rank_class": 22,
+      "anchors": 829,
+      "anchor_cube_subsets": 19212664,
+      "half_entries": 89612
+    },
+    "53": {
+      "groups": 112,
+      "rank_class_subsets_upper": 1469048,
+      "largest_rank_class": 20,
+      "anchors": 538,
+      "anchor_cube_subsets": 1465644,
+      "half_entries": 20720
+    },
+    "-59": {
+      "groups": 97,
+      "rank_class_subsets_upper": 2941784,
+      "largest_rank_class": 21,
+      "anchors": 492,
+      "anchor_cube_subsets": 2893896,
+      "half_entries": 26842
+    },
+    "61": {
+      "groups": 86,
+      "rank_class_subsets_upper": 428088,
+      "largest_rank_class": 16,
+      "anchors": 428,
+      "anchor_cube_subsets": 425536,
+      "half_entries": 15022
+    },
+    "-67": {
+      "groups": 68,
+      "rank_class_subsets_upper": 470752,
+      "largest_rank_class": 17,
+      "anchors": 346,
+      "anchor_cube_subsets": 468668,
+      "half_entries": 12330
+    },
+    "-71": {
+      "groups": 56,
+      "rank_class_subsets_upper": 74824,
+      "largest_rank_class": 13,
+      "anchors": 341,
+      "anchor_cube_subsets": 73272,
+      "half_entries": 7284
+    },
+    "73": {
+      "groups": 45,
+      "rank_class_subsets_upper": 104024,
+      "largest_rank_class": 15,
+      "anchors": 305,
+      "anchor_cube_subsets": 102348,
+      "half_entries": 7470
+    },
+    "-79": {
+      "groups": 39,
+      "rank_class_subsets_upper": 3191472,
+      "largest_rank_class": 21,
+      "anchors": 314,
+      "anchor_cube_subsets": 3187672,
+      "half_entries": 26396
+    },
+    "-83": {
+      "groups": 34,
+      "rank_class_subsets_upper": 1164496,
+      "largest_rank_class": 19,
+      "anchors": 264,
+      "anchor_cube_subsets": 1162844,
+      "half_entries": 15358
+    },
+    "89": {
+      "groups": 25,
+      "rank_class_subsets_upper": 287448,
+      "largest_rank_class": 18,
+      "anchors": 167,
+      "anchor_cube_subsets": 286660,
+      "half_entries": 5472
+    },
+    "97": {
+      "groups": 22,
+      "rank_class_subsets_upper": 37776,
+      "largest_rank_class": 13,
+      "anchors": 191,
+      "anchor_cube_subsets": 36960,
+      "half_entries": 3988
+    },
+    "101": {
+      "groups": 21,
+      "rank_class_subsets_upper": 291870720,
+      "largest_rank_class": 28,
+      "anchors": 294,
+      "anchor_cube_subsets": 291800320,
+      "half_entries": 153884
+    },
+    "-103": {
+      "groups": 18,
+      "rank_class_subsets_upper": 45920,
+      "largest_rank_class": 14,
+      "anchors": 186,
+      "anchor_cube_subsets": 45044,
+      "half_entries": 4154
+    },
+    "-107": {
+      "groups": 16,
+      "rank_class_subsets_upper": 13288704,
+      "largest_rank_class": 23,
+      "anchors": 197,
+      "anchor_cube_subsets": 13271812,
+      "half_entries": 44892
+    },
+    "109": {
+      "groups": 14,
+      "rank_class_subsets_upper": 150339584,
+      "largest_rank_class": 27,
+      "anchors": 196,
+      "anchor_cube_subsets": 150339148,
+      "half_entries": 105378
+    },
+    "113": {
+      "groups": 10,
+      "rank_class_subsets_upper": 175648,
+      "largest_rank_class": 16,
+      "anchors": 103,
+      "anchor_cube_subsets": 175220,
+      "half_entries": 5608
+    },
+    "-127": {
+      "groups": 8,
+      "rank_class_subsets_upper": 62544,
+      "largest_rank_class": 15,
+      "anchors": 94,
+      "anchor_cube_subsets": 62356,
+      "half_entries": 3152
+    },
+    "-131": {
+      "groups": 5,
+      "rank_class_subsets_upper": 39712,
+      "largest_rank_class": 15,
+      "anchors": 48,
+      "anchor_cube_subsets": 39568,
+      "half_entries": 1664
+    },
+    "137": {
+      "groups": 3,
+      "rank_class_subsets_upper": 10816,
+      "largest_rank_class": 13,
+      "anchors": 36,
+      "anchor_cube_subsets": 10752,
+      "half_entries": 888
+    },
+    "-139": {
+      "groups": 3,
+      "rank_class_subsets_upper": 6160,
+      "largest_rank_class": 11,
+      "anchors": 32,
+      "anchor_cube_subsets": 6052,
+      "half_entries": 764
+    },
+    "149": {
+      "groups": 3,
+      "rank_class_subsets_upper": 10496,
+      "largest_rank_class": 13,
+      "anchors": 30,
+      "anchor_cube_subsets": 10328,
+      "half_entries": 796
+    },
+    "-151": {
+      "groups": 3,
+      "rank_class_subsets_upper": 150912,
+      "largest_rank_class": 17,
+      "anchors": 45,
+      "anchor_cube_subsets": 150620,
+      "half_entries": 2806
+    },
+    "157": {
+      "groups": 3,
+      "rank_class_subsets_upper": 22784,
+      "largest_rank_class": 14,
+      "anchors": 41,
+      "anchor_cube_subsets": 22624,
+      "half_entries": 1354
+    },
+    "-163": {
+      "groups": 1,
+      "rank_class_subsets_upper": 192,
+      "largest_rank_class": 7,
+      "anchors": 5,
+      "anchor_cube_subsets": 124,
+      "half_entries": 46
+    }
+  },
+  "hits": []
+}

@@ -1,0 +1,30 @@
+# Local builds, Python state and live worker output
+__pycache__/
+.venv/
+*.log
+*.pid
+*.tmp
+/intsieve
+/chars
+/join
+/divisor_lift
+/rank_divisors
+/triple_orders
+/split_scan
+/split_segment
+
+# Keep final campaign summary, checksums and native catalogue inputs, not the
+# VM mirror, redundant worker transcripts, or its live operational metadata.
+/runs/bigcpu-*/*
+!/runs/bigcpu-*/audit-sha256.txt
+!/runs/bigcpu-*/report-final.json
+!/runs/bigcpu-*/remote/
+/runs/bigcpu-*/remote/*
+!/runs/bigcpu-*/remote/iris-base2-*/
+!/runs/bigcpu-*/remote/iris-index-*/
+!/runs/bigcpu-*/remote/iris-refine-*/
+/runs/bigcpu-*/remote/*/*
+!/runs/bigcpu-*/remote/*/components.jsonl
+/runs/anchor-v*/
+/runs/gcd-v*/
+/runs/scale-next/cunningham/appa1126.txt

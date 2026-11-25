@@ -1,0 +1,29 @@
+{
+  "seed": 1,
+  "blocks": [
+    {
+      "size": 582,
+      "group_bits": 1719.4361084486286,
+      "index": 1,
+      "target_reachable": true
+    },
+    {
+      "size": 582,
+      "group_bits": 1719.4361084486286,
+      "index": 1,
+      "target_reachable": true
+    },
+    {
+      "size": 582,
+      "group_bits": 1719.4361084486286,
+      "index": 1,
+      "target_reachable": true
+    },
+    {
+      "size": 581,
+      "group_bits": 1719.4361084486286,
+      "index": 1,
+      "target_reachable": true
+    }
+  ]
+}

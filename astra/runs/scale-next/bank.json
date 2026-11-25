@@ -1,0 +1,12 @@
+{
+  "source_sha256": "c83aa8ceb173447103132ea4b9f8a662dcbd2be708520ff5f3620520491a81cd",
+  "counts": {
+    "banks": 4751,
+    "strong_base2_products": 5118583,
+    "prior_gcd_rejections": 0,
+    "eligible_character": 5118578,
+    "after_small_ranks": 319368,
+    "direct_Lucas_tests": 5
+  },
+  "hits": []
+}

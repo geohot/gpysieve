@@ -1,0 +1,10 @@
+{
+  "source_sha256": "c83aa8ceb173447103132ea4b9f8a662dcbd2be708520ff5f3620520491a81cd",
+  "max_box": 20,
+  "counts": {
+    "distinct_selections": 5119163,
+    "boxes": 16761
+  },
+  "hits": [],
+  "count_only": true
+}

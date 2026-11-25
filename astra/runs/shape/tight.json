@@ -1,0 +1,316 @@
+{
+  "2": {
+    "factors": 2,
+    "diameter": 360,
+    "discriminants": [
+      5,
+      -7,
+      -11,
+      13,
+      -15,
+      17,
+      -19,
+      21
+    ],
+    "counts": {
+      "patterns": 180,
+      "sieved_shape_D": 1440,
+      "prime_translates": 608
+    },
+    "unresolved": [],
+    "actual_D_and_MR": [],
+    "hits": [],
+    "trace_sha256": "90752f113fd805c7878ad235e3cfe8f7b8e924f811f01083f888313140635fe0"
+  },
+  "7": {
+    "factors": 7,
+    "diameter": 26,
+    "discriminants": [
+      5,
+      -7,
+      -11,
+      13,
+      -15,
+      17,
+      -19,
+      21
+    ],
+    "counts": {
+      "patterns": 1716,
+      "forced_small_prime": 1682,
+      "sieved_shape_D": 272,
+      "prime_translates": 0
+    },
+    "unresolved": [],
+    "actual_D_and_MR": [],
+    "hits": [],
+    "trace_sha256": "ef938a83671a567d3aa6da0188be03e355965991051c24b3427fd2aa2b21b17a"
+  },
+  "8": {
+    "factors": 8,
+    "diameter": 26,
+    "discriminants": [
+      5,
+      -7,
+      -11,
+      13,
+      -15,
+      17,
+      -19,
+      21
+    ],
+    "counts": {
+      "patterns": 1716,
+      "forced_small_prime": 1713,
+      "sieved_shape_D": 24,
+      "prime_translates": 0
+    },
+    "unresolved": [
+      [
+        [
+          0,
+          2,
+          6,
+          12,
+          14,
+          20,
+          24,
+          26
+        ],
+        5
+      ],
+      [
+        [
+          0,
+          2,
+          6,
+          12,
+          14,
+          20,
+          24,
+          26
+        ],
+        -7
+      ],
+      [
+        [
+          0,
+          2,
+          6,
+          12,
+          14,
+          20,
+          24,
+          26
+        ],
+        -11
+      ],
+      [
+        [
+          0,
+          2,
+          6,
+          12,
+          14,
+          20,
+          24,
+          26
+        ],
+        13
+      ],
+      [
+        [
+          0,
+          2,
+          6,
+          12,
+          14,
+          20,
+          24,
+          26
+        ],
+        -15
+      ],
+      [
+        [
+          0,
+          2,
+          6,
+          12,
+          14,
+          20,
+          24,
+          26
+        ],
+        17
+      ],
+      [
+        [
+          0,
+          2,
+          6,
+          12,
+          14,
+          20,
+          24,
+          26
+        ],
+        -19
+      ],
+      [
+        [
+          0,
+          2,
+          6,
+          12,
+          14,
+          20,
+          24,
+          26
+        ],
+        21
+      ]
+    ],
+    "actual_D_and_MR": [],
+    "hits": [],
+    "trace_sha256": "a88ded91e734aa5ff1c9dda711763f949fa392423b360d25e17cf7351be95c80"
+  },
+  "9": {
+    "factors": 9,
+    "diameter": 26,
+    "discriminants": [
+      5,
+      -7,
+      -11,
+      13,
+      -15,
+      17,
+      -19,
+      21
+    ],
+    "counts": {
+      "patterns": 1287,
+      "forced_small_prime": 1287,
+      "sieved_shape_D": 0
+    },
+    "unresolved": [],
+    "actual_D_and_MR": [],
+    "hits": [],
+    "trace_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "10": {
+    "factors": 10,
+    "diameter": 26,
+    "discriminants": [
+      5,
+      -7,
+      -11,
+      13,
+      -15,
+      17,
+      -19,
+      21
+    ],
+    "counts": {
+      "patterns": 715,
+      "forced_small_prime": 715,
+      "sieved_shape_D": 0
+    },
+    "unresolved": [],
+    "actual_D_and_MR": [],
+    "hits": [],
+    "trace_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "11": {
+    "factors": 11,
+    "diameter": 26,
+    "discriminants": [
+      5,
+      -7,
+      -11,
+      13,
+      -15,
+      17,
+      -19,
+      21
+    ],
+    "counts": {
+      "patterns": 286,
+      "forced_small_prime": 286,
+      "sieved_shape_D": 0
+    },
+    "unresolved": [],
+    "actual_D_and_MR": [],
+    "hits": [],
+    "trace_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "12": {
+    "factors": 12,
+    "diameter": 26,
+    "discriminants": [
+      5,
+      -7,
+      -11,
+      13,
+      -15,
+      17,
+      -19,
+      21
+    ],
+    "counts": {
+      "patterns": 78,
+      "forced_small_prime": 78,
+      "sieved_shape_D": 0
+    },
+    "unresolved": [],
+    "actual_D_and_MR": [],
+    "hits": [],
+    "trace_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "13": {
+    "factors": 13,
+    "diameter": 26,
+    "discriminants": [
+      5,
+      -7,
+      -11,
+      13,
+      -15,
+      17,
+      -19,
+      21
+    ],
+    "counts": {
+      "patterns": 13,
+      "forced_small_prime": 13,
+      "sieved_shape_D": 0
+    },
+    "unresolved": [],
+    "actual_D_and_MR": [],
+    "hits": [],
+    "trace_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "14": {
+    "factors": 14,
+    "diameter": 26,
+    "discriminants": [
+      5,
+      -7,
+      -11,
+      13,
+      -15,
+      17,
+      -19,
+      21
+    ],
+    "counts": {
+      "patterns": 1,
+      "forced_small_prime": 1,
+      "sieved_shape_D": 0
+    },
+    "unresolved": [],
+    "actual_D_and_MR": [],
+    "hits": [],
+    "trace_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "D": -15,
+  "rank_lcm_bound": 1000000,
+  "catalogue_size": 1939,
+  "source_sha256": {
+    "iris-index-128": "61e17e170a4317658bbcef92aa0aef2a3654913d4956875b44ffd5f6cde56feb",
+    "iris-index-384b": "a420bcc8fa423a061ea769ac15e1340fccbcaae4e730fcbda103e3aacc68f113",
+    "iris-index-384": "89f79cfbd8981f52068e167c5efe89a548785b0f542310d1ddb4353f1d355dc4",
+    "iris-index-768b": "dff0a0f7aaed738f50afad48a05e350ede4d79330255076afd0435f8e048d317",
+    "iris-refine-192": "3115c2bd867d3bdffef0807755acaf33a64cdd63c9e90b6fd7e0f1fd51218f0d",
+    "iris-refine-256": "bbadac984fc633ca532aff00deb61d8008efab2b4c6c71b4a4a5e14c8fa12fe7"
+  },
+  "exact_binary_orders": 1723,
+  "counts": {
+    "rank_templates": 167629,
+    "raw_patterns": 404227914406901873713429092830569492280,
+    "rank_class_subsets_upper": 141984724,
+    "largest_rank_class": 22,
+    "anchors": 143232,
+    "anchor_cube_subsets": 120284128,
+    "half_entries": 2909994,
+    "anchor_matches": 97
+  },
+  "hits": []
+}

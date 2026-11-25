@@ -1,0 +1,44 @@
+{
+  "source_sha256": "7b129c9ff8a942587c430c841aedea1f3ff0f74160d7e2b27bae03e2dbe5da4b",
+  "complete_h": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12
+  ],
+  "incomplete_h_residual_bits": {
+    "13": 303,
+    "14": 309,
+    "15": 241,
+    "16": 769,
+    "17": 1056,
+    "18": 419,
+    "19": 1353,
+    "20": 320,
+    "21": 973,
+    "22": 1306
+  },
+  "distinct_certified_centers": 91,
+  "counts": {
+    "center_gap": 722,
+    "above64": 464
+  },
+  "largest_tested_bits": 331,
+  "base2_pass": [
+    {
+      "p": 37,
+      "d": 24,
+      "h": 12,
+      "n": 29341
+    }
+  ],
+  "hits": []
+}
